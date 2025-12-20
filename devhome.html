@@ -730,7 +730,7 @@
             <a class="backbtn" id="nn" href="newdev.html"><i class="fas fa-user-plus"></i> New Projects</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="xbb"
                 style="cursor: pointer;border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -839,9 +839,9 @@
                 </button>
                 <input type="text" id="search-input" placeholder="Search..." oninput="filterTransactions()">
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1I-rydhmgYJT084mq1n7SW_2KfU5IWiCiZugRih_ERaE/edit?gid=728012299#gid=728012299', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/1UwmanYExPVlBCo2CQ0zb5j1XH39vgoiN-PG9g4hfiBo/edit?gid=728012299#gid=728012299', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet"></i>
-               
+
             </div>
         </div>
 
@@ -1084,7 +1084,9 @@
                 displayElement.appendChild(span);
             });
         };
-
+        const devsheetid = "1UwmanYExPVlBCo2CQ0zb5j1XH39vgoiN-PG9g4hfiBo";
+        const laboursheetid = "110DPsx16wZgvBlzm1lhteElCG5PMFQJaAPZnFR7iMAM";
+        const materialsheetid = "1JpoiZqtHnnmuDLXbZtf2ZwE6oH4hPxlqQjTp63D_9Jw";
         document.addEventListener("DOMContentLoaded", function () {
             let devData = null;
             let labourData = null;
@@ -1094,9 +1096,9 @@
             async function fetchAllData() {
                 try {
                     const [devResponse, labourResponse, materialResponse] = await Promise.all([
-                        fetch("https://docs.google.com/spreadsheets/d/1I-rydhmgYJT084mq1n7SW_2KfU5IWiCiZugRih_ERaE/gviz/tq?tqx=out:csv&gid=728012299"),
-                        fetch("https://docs.google.com/spreadsheets/d/13q-w16qD4ng-iLjjzqbV9ZFW3cnlIMyPIslsiWvhqVo/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/1lfRbCMyfzDuB6MYF_S5n9sl6RabQfYrGF08aEw7eDaw/gviz/tq?tqx=out:csv")
+                        fetch(`https://docs.google.com/spreadsheets/d/${devsheetid}/gviz/tq?tqx=out:csv&gid=728012299`),
+                        fetch(`https://docs.google.com/spreadsheets/d/${laboursheetid}/gviz/tq?tqx=out:csv`),
+                        fetch(`https://docs.google.com/spreadsheets/d/${materialsheetid}/gviz/tq?tqx=out:csv`)
                     ]);
 
                     // Parse all CSV data simultaneously
@@ -1256,7 +1258,7 @@
             let serialNumber = rows.length + 1;
             let htmlContent = '';
 
-            for (let i = rows.length - 1; i > 0; i--) {
+            for (let i = rows.length - 1; i > 1; i--) {
                 const row = rows[i];
                 // For CSV data, access columns directly by index
                 const rawDate = row[0] || 'N/A';
@@ -1332,7 +1334,7 @@
                 const transactionId = target.getAttribute('data-transaction-id');
                 const transaction = transactions.find((t) => t.serialNumber === parseInt(transactionId, 10));
                 if (transaction) {
-                    const redirectUrl = `https://docs.google.com/spreadsheets/d/1I-rydhmgYJT084mq1n7SW_2KfU5IWiCiZugRih_ERaE/edit?gid=728012299#range=E${transaction.serialNumber}`;
+                    const redirectUrl = `https://docs.google.com/spreadsheets/d/${devsheetid}/edit?gid=728012299#range=E${transaction.serialNumber}`;
                     window.open(redirectUrl, '_blank');
                 }
             }
@@ -1677,11 +1679,11 @@
         const stt = e.state;
         if (stt === "admin") {
             document.getElementById('llshh').addEventListener('click', function (e) {
-                window.open('https://docs.google.com/spreadsheets/d/13q-w16qD4ng-iLjjzqbV9ZFW3cnlIMyPIslsiWvhqVo/edit?gid=739886964#gid=739886964', '_blank');
+                window.open(`https://docs.google.com/spreadsheets/d/${laboursheetid}/edit?gid=739886964#gid=739886964`, '_blank');
             });
 
             document.getElementById('mmshh').addEventListener('click', function (e) {
-                window.open('https://docs.google.com/spreadsheets/d/1lfRbCMyfzDuB6MYF_S5n9sl6RabQfYrGF08aEw7eDaw/edit?gid=1332981763#gid=1332981763', '_blank');
+                window.open(`https://docs.google.com/spreadsheets/d/${materialsheetid}/edit?gid=1332981763#gid=1332981763`, '_blank');
             });
 
             document.getElementById("nn").style.display = "block";
@@ -1690,13 +1692,12 @@
         } else {
             document.getElementById("nn").style.display = "none";
             document.getElementById('shtl').style.display = 'none';
-            document.getElementById('edit-permission-toggle').style.display = 'none';
             document.getElementById('mmshh').style.display = 'none';
             document.getElementById('llshh').style.display = 'none';
         }
-
-        const customersSheetUrl = 'https://docs.google.com/spreadsheets/d/1-eLT3ufiAq5QEUMtJPPl3UFeVlbGuFe_1NSnIgXdncw/gviz/tq?tqx=out:csv';
-        const suppliersSheetUrl = 'https://docs.google.com/spreadsheets/d/1I-rydhmgYJT084mq1n7SW_2KfU5IWiCiZugRih_ERaE/gviz/tq?tqx=out:csv';
+        const suppliersheetid = "1Z9nvMmy8FcEoJT8mz6GyVsy2OcItLLqbU4Zv67O6kQ";
+        const customersSheetUrl = `https://docs.google.com/spreadsheets/d/${devsheetid}/gviz/tq?tqx=out:csv`;
+        const suppliersSheetUrl = `https://docs.google.com/spreadsheets/d/${suppliersheetid}/gviz/tq?tqx=out:csv`;
 
         async function fetchSheetData(sheetUrl, skipRows = 1) {
             try {

@@ -287,7 +287,7 @@
             <a class="backbtn" id="nn" href="newdev.html"><i class="fas fa-user-plus"></i> New Project</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="xbb"
                 style="border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;cursor: pointer;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -300,7 +300,7 @@
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Search..." oninput="filterTransactions()">
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1-eLT3ufiAq5QEUMtJPPl3UFeVlbGuFe_1NSnIgXdncw/edit?gid=2005736034#gid=2005736034', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/1Z9nvMmy8FcEoJT8mz6GyVsy2OcItLLqbU4Zv67O6kQ8/edit?gid=2005736034#gid=2005736034', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet" style="cursor:pointer;"></i>
             </div>
         </div>
@@ -395,7 +395,7 @@
         // Function to fetch and display data using CSV format
         async function fetchAllData() {
             try {
-                const csvUrl = 'https://docs.google.com/spreadsheets/d/1-eLT3ufiAq5QEUMtJPPl3UFeVlbGuFe_1NSnIgXdncw/gviz/tq?tqx=out:csv&gid=2005736034';
+                const csvUrl = 'https://docs.google.com/spreadsheets/d/1Z9nvMmy8FcEoJT8mz6GyVsy2OcItLLqbU4Zv67O6kQ8/gviz/tq?tqx=out:csv&gid=2005736034';
                 console.log('Fetching CSV data from:', csvUrl);
 
                 const response = await fetch(csvUrl);
@@ -471,25 +471,25 @@
                 const Land = row[2] || 0;
                 const Status = row[3] || 'N/A';
                 const sheetid = row[4] || 'N/A';
-                const sheetid2 = row[5] || 'N/A';
-                const sgid = row[6] || 'N/A';
-                const sgid2 = row[7] || 'N/A';
-                const formid = row[8] || 0;
-                const formid2 = row[9] || 'N/A';
-                const sdentry = row[10] || 'N/A';
-                const sdentry2 = row[11] || 'N/A';
-                const srentry = row[12] || 'N/A';
-                const srentry2 = row[13] || 'N/A';
-                const saentry = row[14] || 'N/A';
-                const saentry2 = row[15] || 0;
-                const nameen = row[16] || 'N/A';
-                const phoneen = row[17] || 'N/A';
-                const houseen = row[18] || 'N/A';
-                const mailen = row[19] || 'N/A';
-                const statusen = row[20] || 0;
-                const sheetiden = row[21] || 'N/A';
-                const sgiden = row[22] || 'N/A';
-                const formiden = row[23] || 'N/A';
+                const sgid = row[5] || 'N/A';
+                const formid = row[6] || 'N/A';
+                const sdentry = row[7] || 'N/A';
+                const srentry = row[8] || 'N/A';
+                const saentry = row[9] || 'N/A';
+                const sheetid2 = row[10] || 'N/A';
+                const sheetiden = row[11] || 'N/A';
+                const sgid2 = row[12] || 'N/A';
+                const sgiden = row[13] || 'N/A';
+                const formid2 = row[14] || 'N/A';
+                const formiden = row[15] || 'N/A';
+                const sdentry2 = row[16] || 'N/A';
+                const srentry2 = row[17] || 'N/A';
+                const saentry2 = row[18] || 'N/A';
+                const nameen = row[19] || 'N/A';
+                const phoneen = row[20] || 'N/A';
+                const houseen = row[21] || 'N/A';
+                const mailen = row[22] || 'N/A';
+                const statusen = row[23] || 'N/A';
 
                 let formattedDate = smartDateConversion(rawDate);
 

@@ -566,7 +566,7 @@
             <a class="backbtn" id="nn" href="newowner.html"><i class="fas fa-user-plus"></i> New Owner</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="backbtn xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="backbtn xbb"
                 style="cursor: pointer;border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -634,9 +634,9 @@
                 </button>
                 <input type="text" id="search-input" placeholder="Search..." oninput="filterTransactions()">
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/17KgMaKPLSIYgdSu8zbNNYQx275adN66YGOkap1PIHJ0/edit?gid=527884337#gid=527884337', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/19T4nxKTDijjSmhBus3ufn1rovbEksuE9Ed0cC3ZxE5s/edit?gid=527884337#gid=527884337', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet" style="cursor:pointer;"></i>
-                
+
             </div>
         </div>
         <div class="menu">
@@ -725,7 +725,7 @@
                 popupOverlay.style.display = "none";  // Hide the popup
             }
         });
-      
+
         document.getElementById('fire-search-btn').addEventListener('click', () => {
             const editIcon2 = document.getElementById('fire-search');
             const editPermissionToggle2 = document.getElementById('fire-search-btn');
@@ -764,7 +764,6 @@
             document.getElementById("adcost").style.display = "none";
             document.getElementById("nn").style.display = "none";
             document.getElementById('shtl').style.display = 'none';
-            document.getElementById('edit-permission-toggle').style.display = 'none';
         }
 
         document.querySelectorAll('.backbtn').forEach(function (button) {
@@ -834,7 +833,7 @@
             async function fetchAllData() {
                 try {
                     // Fetch Loan data
-                    const loanSheetId = "17KgMaKPLSIYgdSu8zbNNYQx275adN66YGOkap1PIHJ0";
+                    const loanSheetId = "19T4nxKTDijjSmhBus3ufn1rovbEksuE9Ed0cC3ZxE5s";
                     const loanResponse = await fetch(`https://docs.google.com/spreadsheets/d/${loanSheetId}/gviz/tq?tqx=out:csv`);
                     const loanCsvText = await loanResponse.text();
                     const loanRows = loanCsvText.split("\n");
@@ -871,7 +870,7 @@
             let serialNumber = rows.length;
             let htmlContent = '';
 
-            for (let i = rows.length - 1; i > 0; i--) {
+            for (let i = rows.length - 1; i > 1; i--) {
                 const row = rows[i];
                 const rawDate = row[0] || 'N/A';
                 const Description = row[1] || 'N/A';
@@ -943,7 +942,7 @@
                 const transactionId = target.getAttribute('data-transaction-id');
                 const transaction = transactions.find((t) => t.serialNumber === parseInt(transactionId, 10));
                 if (transaction) {
-                    const redirectUrl = `https://docs.google.com/spreadsheets/d/17KgMaKPLSIYgdSu8zbNNYQx275adN66YGOkap1PIHJ0/edit?gid=527884337#range=E${transaction.serialNumber}`;
+                    const redirectUrl = `https://docs.google.com/spreadsheets/d/19T4nxKTDijjSmhBus3ufn1rovbEksuE9Ed0cC3ZxE5s/edit?gid=527884337#range=E${transaction.serialNumber}`;
                     window.open(redirectUrl, '_blank');
                 }
             }
@@ -1242,7 +1241,7 @@
 
             if (amount >= 0) {
                 const googleForm = {
-                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLScyan8jBXcTluFbfF7ru8uwwvTEc_lEgTEPh1y4k34bB4vrcA/formResponse",
+                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdwedgoT9BlgYW1QLPy5uXinyCA_92BR2fBfD0vpCBtPgdTcg/formResponse",
                     entries: {
                         reason: "entry.1525024123",
                         amount: "entry.178731031",
@@ -1307,7 +1306,7 @@
 
             if (amount >= 0) {
                 const googleForm = {
-                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLScyan8jBXcTluFbfF7ru8uwwvTEc_lEgTEPh1y4k34bB4vrcA/formResponse",
+                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdwedgoT9BlgYW1QLPy5uXinyCA_92BR2fBfD0vpCBtPgdTcg/formResponse",
                     entries: {
                         reason: "entry.1525024123",
                         amount: "entry.178731031",

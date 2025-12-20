@@ -715,7 +715,7 @@
             <a class="backbtn" id="nn" href="newowner.html"><i class="fas fa-user-plus"></i> New Owner</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="xbb"
                 style="cursor: pointer;border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -820,9 +820,9 @@
                 </button>
                 <input type="text" id="search-input" placeholder="Search..." oninput="filterTransactions()">
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1lyQ0otJ0_h8fFj66SPxaW3EZ6QhlEvGQG1srpc4UVW4/edit?gid=1886029600#gid=1886029600', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/1o4kgwXO8c9KyB4yb_Zv47Gj9K3cdDP9hILG-Wq8K4Bw/edit?gid=1886029600#gid=1886029600', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet" style="cursor:pointer;"></i>
-              
+
             </div>
         </div>
 
@@ -908,7 +908,7 @@
                 });
             });
         })();
-        const customersSheetUrl = 'https://docs.google.com/spreadsheets/d/1d6A9YXQkEjlQyioOUS5zYc-_bibN_Nt3YmoCQWvv-5s/gviz/tq?tqx=out:csv';
+        const customersSheetUrl = 'https://docs.google.com/spreadsheets/d/1S96UwdC62Z6rpaU8ocr6fF0n3jV4JLMyjJo2l5D605U/gviz/tq?tqx=out:csv';
 
         async function fetchSheetData(sheetUrl, skipRows = 1) {
             try {
@@ -1032,6 +1032,9 @@
                 return lastThree;
             }
         }
+        const officesheetid = "1o4kgwXO8c9KyB4yb_Zv47Gj9K3cdDP9hILG-Wq8K4Bw";
+        const loansheetid = "19T4nxKTDijjSmhBus3ufn1rovbEksuE9Ed0cC3ZxE5s";
+        const ofcostsheetid = "1nv2qtDZm8LBlIx6fcUs7MwrawCUAXFIhWKsq3z-1IVc";
         document.addEventListener("DOMContentLoaded", function () {
             let officeData = null;
             let loanData = null;
@@ -1041,9 +1044,9 @@
             async function fetchAllData() {
                 try {
                     const [officeResponse, loanResponse, ofcostResponse] = await Promise.all([
-                        fetch("https://docs.google.com/spreadsheets/d/1lyQ0otJ0_h8fFj66SPxaW3EZ6QhlEvGQG1srpc4UVW4/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/17KgMaKPLSIYgdSu8zbNNYQx275adN66YGOkap1PIHJ0/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/1LPv7bORNSyoSM6Kyu7v-7r19HJTiLtI0DKcJ99Xwwr8/gviz/tq?tqx=out:csv")
+                        fetch(`https://docs.google.com/spreadsheets/d/${officesheetid}/gviz/tq?tqx=out:csv`),
+                        fetch(`https://docs.google.com/spreadsheets/d/${loansheetid}/gviz/tq?tqx=out:csv`),
+                        fetch(`https://docs.google.com/spreadsheets/d/${ofcostsheetid}/gviz/tq?tqx=out:csv`)
                     ]);
 
                     // Parse all CSV data simultaneously
@@ -1198,7 +1201,7 @@
             let serialNumber = rows.length + 1;
             let htmlContent = '';
 
-            for (let i = rows.length - 1; i > 0; i--) {
+            for (let i = rows.length - 1; i > 1; i--) {
                 const row = rows[i];
                 // For CSV data, access columns directly by index
                 const rawDate = row[0] || 'N/A';
@@ -1271,7 +1274,7 @@
                 const transactionId = target.getAttribute('data-transaction-id');
                 const transaction = transactions.find((t) => t.serialNumber === parseInt(transactionId, 10));
                 if (transaction) {
-                    const redirectUrl = `https://docs.google.com/spreadsheets/d/1lyQ0otJ0_h8fFj66SPxaW3EZ6QhlEvGQG1srpc4UVW4/edit?gid=454571186#range=E${transaction.serialNumber}`;
+                    const redirectUrl = `https://docs.google.com/spreadsheets/d/${officesheetid}/edit?gid=454571186#range=E${transaction.serialNumber}`;
                     window.open(redirectUrl, '_blank');
                 }
             }
@@ -1584,7 +1587,7 @@
                 popupOverlay.style.display = "none";  // Hide the popup
             }
         });
-    
+
         document.getElementById('fire-search-btn').addEventListener('click', () => {
             const editIcon2 = document.getElementById('fire-search');
             const editPermissionToggle2 = document.getElementById('fire-search-btn');
@@ -1621,7 +1624,6 @@
         } else {
             document.getElementById("nn").style.display = "none";
             document.getElementById('shtl').style.display = 'none';
-            document.getElementById('edit-permission-toggle').style.display = 'none';
         }
 
     </script>

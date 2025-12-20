@@ -578,7 +578,7 @@
             <a class="backbtn" id="nn" href="newowner.html"><i class="fas fa-user-plus"></i> New Owner</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="xbb"
                 style="cursor: pointer;border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -649,7 +649,7 @@
                 </button>
                 <input type="text" id="search-input" placeholder="Search..." oninput="filterTransactions()">
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1LPv7bORNSyoSM6Kyu7v-7r19HJTiLtI0DKcJ99Xwwr8/edit?gid=1886029600#gid=1886029600', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/1nv2qtDZm8LBlIx6fcUs7MwrawCUAXFIhWKsq3z-1IVc/edit?gid=1886029600#gid=1886029600', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet" style="cursor:pointer;"></i>
 
             </div>
@@ -850,6 +850,7 @@
             });
         }
 
+        const officeCostSheetId = "1nv2qtDZm8LBlIx6fcUs7MwrawCUAXFIhWKsq3z-1IVc";
         document.addEventListener("DOMContentLoaded", function () {
             let officeData = null;
             let officeCostData = null;
@@ -858,7 +859,7 @@
             async function fetchAllData() {
                 try {
                     // Fetch Office data
-                    const officeSheetId = "1lyQ0otJ0_h8fFj66SPxaW3EZ6QhlEvGQG1srpc4UVW4";
+                    const officeSheetId = "1o4kgwXO8c9KyB4yb_Zv47Gj9K3cdDP9hILG-Wq8K4Bw";
                     const officeResponse = await fetch(`https://docs.google.com/spreadsheets/d/${officeSheetId}/gviz/tq?tqx=out:csv`);
                     const officeCsvText = await officeResponse.text();
                     const officeRows = officeCsvText.split("\n");
@@ -879,7 +880,6 @@
 
             async function fetchOfficeCostTransactionData() {
                 try {
-                    const officeCostSheetId = "1LPv7bORNSyoSM6Kyu7v-7r19HJTiLtI0DKcJ99Xwwr8";
                     const officeCostResponse = await fetch(`https://docs.google.com/spreadsheets/d/${officeCostSheetId}/gviz/tq?tqx=out:csv&gid=1886029600`);
                     const officeCostCsvText = await officeCostResponse.text();
 
@@ -890,6 +890,10 @@
                         );
                     });
 
+
+                    // Total Cost (E4 from office cost sheet - row 3, column 4)
+                    const totalCost = parseFloat(rows[1]?.[3] || 0);
+                    displayAnimatedText("total-cost", formatNumber(Math.abs(totalCost)), "letter");
                     // Remove header row and empty rows
                     const dataRows = rows.slice(1).filter(row => row.length > 1 && row[0]);
 
@@ -909,28 +913,6 @@
                     element.style.color = "red";
                 }
                 displayAnimatedText("balance", formatNumber(Math.abs(balance)), "letter");
-
-                // Fetch and display total cost from office cost sheet
-                fetchOfficeCostData();
-            }
-
-            async function fetchOfficeCostData() {
-                try {
-                    const officeCostSheetId = "1LPv7bORNSyoSM6Kyu7v-7r19HJTiLtI0DKcJ99Xwwr8";
-                    const officeCostResponse = await fetch(`https://docs.google.com/spreadsheets/d/${officeCostSheetId}/gviz/tq?tqx=out:csv`);
-                    const officeCostCsvText = await officeCostResponse.text();
-                    const officeCostRows = officeCostCsvText.split("\n");
-                    officeCostData = officeCostRows.map((row) =>
-                        row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-                            .map((cell) => cell.replace(/^"|"$/g, "").trim())
-                    );
-
-                    // Total Cost (E4 from office cost sheet - row 3, column 4)
-                    const totalCost = parseFloat(officeCostData[1]?.[3] || 0);
-                    displayAnimatedText("total-cost", formatNumber(Math.abs(totalCost)), "letter");
-                } catch (error) {
-                    console.error('Error fetching office cost data:', error);
-                }
             }
 
             // Start fetching data
@@ -1102,7 +1084,7 @@
                 const transactionId = target.getAttribute('data-transaction-id');
                 const transaction = transactions.find((t) => t.serialNumber === parseInt(transactionId, 10));
                 if (transaction) {
-                    const redirectUrl = `https://docs.google.com/spreadsheets/d/1LPv7bORNSyoSM6Kyu7v-7r19HJTiLtI0DKcJ99Xwwr8/edit?gid=1886029600#range=E${transaction.serialNumber}`;
+                    const redirectUrl = `https://docs.google.com/spreadsheets/d/${officeCostSheetId}/edit?gid=1886029600#range=E${transaction.serialNumber}`;
                     window.open(redirectUrl, '_blank');
                 }
             }
@@ -1401,7 +1383,7 @@
             if (amount >= 5) {
                 let googleFormsData = [
                     {
-                        url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdwn_TRFC_uj8yuD7r9FyT4kwN9-353YvLRgGqCtF4dV-apvw/formResponse",
+                        url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfIp4kL26rFXtc5JDJ1EIN1dK3JyceEsCJLxAP4WKBQ9nMPZw/formResponse",
                         entries: {
                             reason: "entry.741005997",
                             amount: "entry.1531813260",
@@ -1409,7 +1391,7 @@
                         }
                     },
                     {
-                        url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSe7_Uju4WiVmnqqp8fNJNoPCcB04pDKPbYtZAPXKGfaq7_A4g/formResponse",
+                        url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdqVoerIkOjO7g7XcFPoxsNEIJswEwYD7pl1z-D16vuKzuFZA/formResponse",
                         entries: {
                             reason: "entry.458544774",
                             amount: "entry.2032103830",

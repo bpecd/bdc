@@ -305,7 +305,7 @@
             <a class="backbtn" id="nn" href="newowner.html"><i class="fas fa-user-plus"></i> New Owner</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="xbb"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="xbb"
                 style="border: none;cursor: pointer;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -321,7 +321,7 @@
                     <option value="">All Status</option>
                 </select>
                 <i id="shtl"
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1d6A9YXQkEjlQyioOUS5zYc-_bibN_Nt3YmoCQWvv-5s/edit?resourcekey=&gid=138275939#gid=138275939', '_blank');"
+                    onclick="window.open('https://docs.google.com/spreadsheets/d/1S96UwdC62Z6rpaU8ocr6fF0n3jV4JLMyjJo2l5D605U/edit?resourcekey=&gid=138275939#gid=138275939', '_blank');"
                     class="fa-duotone fa-solid fa-file-spreadsheet" style="cursor:pointer;"></i>
             </div>
         </div>
@@ -414,7 +414,7 @@
         // Function to fetch and display data using CSV format
         async function fetchAllData() {
             try {
-                const csvUrl = 'https://docs.google.com/spreadsheets/d/1d6A9YXQkEjlQyioOUS5zYc-_bibN_Nt3YmoCQWvv-5s/gviz/tq?tqx=out:csv&gid=138275939';
+                const csvUrl = 'https://docs.google.com/spreadsheets/d/1S96UwdC62Z6rpaU8ocr6fF0n3jV4JLMyjJo2l5D605U/gviz/tq?tqx=out:csv&gid=138275939';
 
                 const response = await fetch(csvUrl);
                 if (!response.ok) {
@@ -848,33 +848,33 @@
             return 'Invalid Date';
         }
 
-   function getStatusIcon(status) {
-    const s = status.toLowerCase();
+        function getStatusIcon(status) {
+            const s = status.toLowerCase();
 
-    const iconMap = [
-        ['office owner', '<i class="fa-duotone fa-solid fa-chair-office" style="color:blue;"></i>'],
-        ['office',       '<i class="fa-duotone fa-solid fa-phone-office" style="color:red;"></i>'],
-        ['staff',        '<i class="fa-solid fa-user-headset" style="color:blue;"></i>'],
-        ['working',      '<i class="fa-regular fa-bars-progress" style="color:blue;"></i>'],
-        ['end',          '<i class="fa-solid fa-box-check" style="color:green;"></i>'],
-        ['admin',        '<i class="fa-solid fa-user-robot" style="color:red;"></i>'],
-        ['land owner',   '<i class="fa-solid fa-street-view" style="color:magenta;"></i>'],
-        ['owner',        '<i class="fa-sharp fa-solid fa-house-user" style="#069494;"></i>'],
-        ['engineer',     '<i class="fa-duotone fa-solid fa-user-secret" style="color:blue;"></i>'],
-        ['client',       '<i class="fa-solid fa-user-visor" style="color:#409c1f;"></i>'],
-        ['architect',    '<i class="fa-solid fa-pen-ruler" style="color:#409c1f;"></i>'],
-        ['developer',    '<i class="fa-solid fa-building-user" style="color:black;"></i>'],
-        ['supplier',        '<i class="fa-solid fa-box-isometric-tape" style="color:red;"></i>'],
-        ['close',        '<i class="fa-solid fa-xmark" style="color:red;"></i>'],
-    ];
+            const iconMap = [
+                ['office owner', '<i class="fa-duotone fa-solid fa-chair-office" style="color:blue;"></i>'],
+                ['office', '<i class="fa-duotone fa-solid fa-phone-office" style="color:red;"></i>'],
+                ['staff', '<i class="fa-solid fa-user-headset" style="color:blue;"></i>'],
+                ['working', '<i class="fa-regular fa-bars-progress" style="color:blue;"></i>'],
+                ['end', '<i class="fa-solid fa-box-check" style="color:green;"></i>'],
+                ['admin', '<i class="fa-solid fa-user-robot" style="color:red;"></i>'],
+                ['land owner', '<i class="fa-solid fa-street-view" style="color:magenta;"></i>'],
+                ['owner', '<i class="fa-sharp fa-solid fa-house-user" style="#069494;"></i>'],
+                ['engineer', '<i class="fa-duotone fa-solid fa-user-secret" style="color:blue;"></i>'],
+                ['client', '<i class="fa-solid fa-user-visor" style="color:#409c1f;"></i>'],
+                ['architect', '<i class="fa-solid fa-pen-ruler" style="color:#409c1f;"></i>'],
+                ['developer', '<i class="fa-solid fa-building-user" style="color:black;"></i>'],
+                ['supplier', '<i class="fa-solid fa-box-isometric-tape" style="color:red;"></i>'],
+                ['close', '<i class="fa-solid fa-xmark" style="color:red;"></i>'],
+            ];
 
-    for (const [keyword, icon] of iconMap) {
-        if (s.includes(keyword)) return icon;
-    }
+            for (const [keyword, icon] of iconMap) {
+                if (s.includes(keyword)) return icon;
+            }
 
-    return '<i class="fa-solid fa-cloud-question" style="color:gray;"></i>';  // default
-}
- </script>
+            return '<i class="fa-solid fa-cloud-question" style="color:gray;"></i>';  // default
+        }
+    </script>
 </body>
 
 </html>

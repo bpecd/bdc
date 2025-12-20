@@ -261,7 +261,7 @@
             display: flex;
             align-items: center;
             gap: 1.25rem;
-            
+
         }
 
         .top-bar .nav-items a {
@@ -421,7 +421,7 @@
             font-weight: bold;
             overflow: hidden;
             text-align: left;
-            padding: 0  0.625rem;
+            padding: 0 0.625rem;
             transition: transform 0.5s ease;
             /* Smooth scaling on hover */
         }
@@ -653,7 +653,7 @@
 
         <!-- Logo -->
         <div style="display: flex; flex-direction: row; gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo">
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo">
             <button class="xbb"
                 style="cursor: pointer; border: none; font-size: 1.25rem; padding: 0.625rem; border-radius:  0.625rem; position: relative;"
                 id="clearButton">
@@ -834,8 +834,8 @@
             });
         })();
 
-        const customersSheetUrl = 'https://docs.google.com/spreadsheets/d/1d6A9YXQkEjlQyioOUS5zYc-_bibN_Nt3YmoCQWvv-5s/gviz/tq?tqx=out:csv';
-        const suppliersSheetUrl = 'https://docs.google.com/spreadsheets/d/1-eLT3ufiAq5QEUMtJPPl3UFeVlbGuFe_1NSnIgXdncw/gviz/tq?tqx=out:csv';
+        const customersSheetUrl = 'https://docs.google.com/spreadsheets/d/1S96UwdC62Z6rpaU8ocr6fF0n3jV4JLMyjJo2l5D605U/gviz/tq?tqx=out:csv'; // owner
+        const suppliersSheetUrl = 'https://docs.google.com/spreadsheets/d/1Z9nvMmy8FcEoJT8mz6GyVsy2OcItLLqbU4Zv67O6kQ8/gviz/tq?tqx=out:csv'; // project
 
         async function fetchSheetData(sheetUrl, skipRows = 1) {
             try {
@@ -945,10 +945,10 @@
             async function fetchAllData() {
                 try {
                     const [devResponse, officeResponse, bankResponse, loanResponse] = await Promise.all([
-                        fetch("https://docs.google.com/spreadsheets/d/1I-rydhmgYJT084mq1n7SW_2KfU5IWiCiZugRih_ERaE/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/1lyQ0otJ0_h8fFj66SPxaW3EZ6QhlEvGQG1srpc4UVW4/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/1-4_CBtsrnplDOlc_RmJt3lfO8MdxQbdqFfqPfWWDhzE/gviz/tq?tqx=out:csv"),
-                        fetch("https://docs.google.com/spreadsheets/d/17KgMaKPLSIYgdSu8zbNNYQx275adN66YGOkap1PIHJ0/gviz/tq?tqx=out:csv")
+                        fetch("https://docs.google.com/spreadsheets/d/1UwmanYExPVlBCo2CQ0zb5j1XH39vgoiN-PG9g4hfiBo/gviz/tq?tqx=out:csv"), // dev
+                        fetch("https://docs.google.com/spreadsheets/d/1o4kgwXO8c9KyB4yb_Zv47Gj9K3cdDP9hILG-Wq8K4Bw/gviz/tq?tqx=out:csv"), // office
+                        fetch("https://docs.google.com/spreadsheets/d/1ibCKPs-WZJeDHdqauIIAZKNu3M1ZW7HCCi3cudsvKdE/gviz/tq?tqx=out:csv"), // bank
+                        fetch("https://docs.google.com/spreadsheets/d/19T4nxKTDijjSmhBus3ufn1rovbEksuE9Ed0cC3ZxE5s/gviz/tq?tqx=out:csv") // loan
                     ]);
 
                     // Parse all CSV data simultaneously
@@ -1094,8 +1094,7 @@
                 const officeReceivePercentage = calculatePercentage(officeReceive, totalreceive);
                 const bankPercentage = calculatePercentage(bankBalance, Math.abs(balanceValue));
                 const loanPercentage = calculatePercentage(loanAmount, Math.abs(balanceValue));
-                const overallPercentage = calculatePercentage(totalcost, totalreceive);
-
+                const overallPercentage = calculatePercentage(totalcost, totalreceive) > 100 ? 100 : calculatePercentage(totalcost, totalreceive);
                 // Update all progress bars simultaneously
                 requestAnimationFrame(() => {
                     document.getElementById("bank-progress").style.width = `${bankPercentage}%`;
@@ -1115,7 +1114,7 @@
                     progressCircle.style.strokeDashoffset = offset;
 
                     // Update percentage display
-                    document.querySelector(".percentage").textContent = `${Math.round(overallPercentage)}%`;
+                    document.querySelector(".percentage").textContent = `${Math.round(overallPercentage) >100 ? 100 : Math.round(overallPercentage)}%`;
                 });
             }
 

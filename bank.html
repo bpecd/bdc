@@ -503,24 +503,6 @@
             }
         }
 
-        #edit-permission-toggle {
-            transition: color 0.5s;
-        }
-
-        #edit-icon {
-            transition: color 0.5s;
-        }
-
-        #edit-permission-toggle.active {
-            color: green;
-            /* Color when enabled */
-        }
-
-        #edit-permission-toggle.inactive {
-            color: red;
-            /* Color when disabled */
-        }
-
         #xvc {
             border-radius: 0.50rem;
             z-index: 1001;
@@ -545,7 +527,7 @@
                 href="bank.html"><i class="fa-solid fa-money-check-dollar-pen"></i> Bank</a>
         </div>
         <div style="display: flex;flex-direction: row;gap: 0.625rem;" class="logo">
-            <img id="img" src="https://nfcard.github.io/login/user.jpg" alt="Logo"><button class="backbtn"
+            <img id="img" src="https://nfcard.github.io/login/Logoup.jpg" alt="Logo"><button class="backbtn"
                 style="border: none;font-size: 1.25rem;padding: 0.625rem; border-radius: 0.938rem;position: relative;"
                 onclick="window.location.href='home.html'"><i class="fa-solid fa-house-chimney"></i></button>
         </div>
@@ -607,13 +589,6 @@
             </div>
         </div>
         <div class="container" id="xvc">
-            <!-- Toggle button for Edit Permission -->
-            <button id="edit-permission-toggle"
-                style="margin-left:95%;background: none; border: none; cursor: pointer; font-size: 1.625rem;">
-                <i id="edit-icon" class="fa-duotone fa-regular fa-pen-to-square" style="color: #ff3021;"></i>
-                <!-- Initial icon: Lock -->
-            </button>
-
             <div class="menu">
                 <span>BANK NAME</span>
                 <span>A/C No.</span>
@@ -702,45 +677,17 @@
             }
         });
 
-        document.getElementById('edit-permission-toggle').addEventListener('click', () => {
-            const editIcon = document.getElementById('edit-icon');
-            const editPermissionToggle = document.getElementById('edit-permission-toggle');
-
-            // Toggle the edit permission state
-            const isEditEnabled = editIcon.classList.contains('fa-pen-to-square'); // If it shows a lock (disabled)
-
-            if (isEditEnabled) {
-                // Enable editing: change to unlocked icon and set the state to true
-                editIcon.classList.remove('fa-pen-to-square'); // Remove lock icon<i class="fa-duotone fa-solid fa-pen-field"></i>
-                editIcon.classList.add('fa-pen-field'); // Add unlock icon<i class="fa-duotone fa-regular fa-pen-to-square"></i>
-                editIcon.style.color = 'green'; // Set green color when editing is enabled
-                editPermissionToggle.classList.add('active');
-                editPermissionToggle.classList.remove('inactive');
-                const xvc = document.getElementById('xvc');
-                xvc.style.boxShadow = 'rgba(222, 7, 7, 0.4) 0px 0px 0px 0.125rem, rgba(222, 7, 7, 0.65) 0px 0.25rem 0.375rem -0.063rem, rgba(255, 255, 255, 0.08) 0px 0.063rem 0px inset';
-            } else {
-                // Disable editing: change to locked icon and set the state to false
-                editIcon.classList.remove('fa-pen-field'); // Remove unlock icon
-                editIcon.classList.add('fa-pen-to-square'); // Add lock icon
-                editIcon.style.color = '#ff3021'; // Set default color for locked state
-                editPermissionToggle.classList.add('inactive');
-                editPermissionToggle.classList.remove('active');
-                document.getElementById('xvc').style.boxShadow = '';
-            }
-        });
         const stt = e.state;
         if (stt === "admin") {
             // Admin has full access; no changes needed
         } else if (stt === "mod") {
             document.getElementById("adcost").style.display = "none";
         } else {
-            const editIcon = document.getElementById('edit-icon');
 
             document.getElementById("adcost").style.display = "none";
-            editIcon.style.display = "none";
             document.getElementById('shtl2').style.display = 'none';
         }
-        const sheetUrl23 = `https://docs.google.com/spreadsheets/d/1-4_CBtsrnplDOlc_RmJt3lfO8MdxQbdqFfqPfWWDhzE/edit`;
+        const sheetUrl23 = `https://docs.google.com/spreadsheets/d/1ibCKPs-WZJeDHdqauIIAZKNu3M1ZW7HCCi3cudsvKdE/edit`;
         document.getElementById('shtl2').addEventListener('click', function () {
             window.open(sheetUrl23, '_blank');
         });
@@ -798,7 +745,7 @@
             async function fetchAllData() {
                 try {
                     // Fetch Bank data using CSV
-                    const bankSheetId = "1-4_CBtsrnplDOlc_RmJt3lfO8MdxQbdqFfqPfWWDhzE";
+                    const bankSheetId = "1ibCKPs-WZJeDHdqauIIAZKNu3M1ZW7HCCi3cudsvKdE";
                     const bankResponse = await fetch(`https://docs.google.com/spreadsheets/d/${bankSheetId}/gviz/tq?tqx=out:csv`);
                     const bankCsvText = await bankResponse.text();
                     const bankRows = bankCsvText.split("\n");
@@ -897,86 +844,6 @@
         }
 
         // Listen for clicks on transactions to edit when permission is enabled
-        document.getElementById('transaction-list').addEventListener('click', (event) => {
-            const target = event.target;
-            const editPermission = document.getElementById('edit-icon').classList.contains('fa-pen-field'); // Check if the permission is enabled
-
-            if (editPermission) {
-                if (
-                    target.classList.contains('transaction-name') ||
-                    target.classList.contains('transaction-amount') ||
-                    target.classList.contains('transaction-description') // Handle clicks on description
-                ) {
-                    const transactionId = parseInt(target.getAttribute('data-transaction-id'), 10);
-                    const column = target.getAttribute('data-column');
-                    if (transactionId && column && stt === "admin") {
-                        const iframe = document.getElementById('iframe');
-                        const popupx = document.getElementById('popupx');
-                        const overlay = document.getElementById('overlay');
-                        const loading = document.getElementById('loading');
-                        const success = document.getElementById('success');
-                        const popstxt = document.getElementById('popstxt'); // Get the h1 element
-                        const cellValueInput = document.getElementById('cellValue'); // The input field for editing
-
-                        popstxt.innerHTML = `You are Editing: <span style="color:red"> ${target.textContent.trim()} </span>`;
-
-                        popupx.style.display = "flex";
-                        cellValueInput.focus();
-                        let isPopupClosed = false;
-
-                        window.generateLink = function () {
-                            const sheetId = "1-4_CBtsrnplDOlc_RmJt3lfO8MdxQbdqFfqPfWWDhzE";
-                            const cellRange = `${column}${transactionId}`;
-                            const value = cellValueInput.value.trim(); // Use the updated input value
-
-                            if (!value) {
-                                alert('Please enter a value.');
-                                return;
-                            }
-
-                            const url = `https://script.google.com/macros/s/AKfycbyHoAFcyRL5S45eGMObqQRc-GuV6B9GA7MqAtqlRaoodlaHbl6ckwOoM3w93KKUvfjq/exec?sheetId=${sheetId}&cellRange=${cellRange}&value=${encodeURIComponent(value)}`;
-
-                            isPopupClosed = false;
-                            loading.style.display = 'block';
-                            overlay.classList.add('active');
-                            iframe.style.display = 'none';
-                            popupx.style.display = 'none';
-                            iframe.src = url;
-
-                            iframe.onload = () => {
-                                setTimeout(closePopup, 4000);
-                            };
-                        };
-
-                        function closePopup() {
-                            if (isPopupClosed) return;
-
-                            isPopupClosed = true;
-
-                            popupx.style.display = 'none';
-                            iframe.src = '';
-                            loading.style.display = 'none';
-                            success.style.display = 'block';
-
-                            setTimeout(() => {
-                                overlay.classList.remove('active');
-                                success.style.display = 'none';
-                                location.reload();
-                            }, 2000);
-                        }
-
-                        window.addEventListener('message', (event) => {
-                            if (event.data === 'closeIframe') {
-                                closePopup();
-                            }
-                        });
-                    }
-                }
-            } else {
-                // Optionally, show a message if the user tries to edit without permission
-                console.log("Editing is disabled. Please enable the edit permission.");
-            }
-        });
         const showbtn = document.getElementById("adcost");
         const btns = document.getElementById("buttons");
         showbtn.addEventListener('click', function (e) {
@@ -1007,7 +874,7 @@
 
             if (amount >= 0) {
                 const googleForm = {
-                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSez29cGn6kjX7iK2DrWp2GCrj5bJAL0NUT2_N3AYqnkKRlY_A/formResponse",
+                    url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSc6zY_2WNKDQSpkZC6kHkVTpK7fssEaML3SurbG6MrDQhJcPw/formResponse",
                     entries: {
                         reason: "entry.1525024123",
                         amount: "entry.178731031",
