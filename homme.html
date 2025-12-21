@@ -943,7 +943,7 @@
 
                     <button class="buttonx cost-btn" id="ecostbtn">Give <i class="fa-duotone fa-solid fa-arrow-up-from-bracket"></i></button><button class="buttonx receive-btn" id="erecbtn">Receive <i class="fa-duotone fa-solid fa-arrow-down-to-bracket"></i></button>
                     
-                    <label id="lbl">
+                    <label  style="display: none;" id="lbl">
                         <input type="checkbox" id="mailCheckbox"> Send Give / Receive mail?
                     </label>    
                 </pre>
@@ -1486,7 +1486,7 @@
                     }
                         </div>
                         <div style="flex: 1; text-align: center;" class="action-buttons">
-                            <button class="email-btn" data-transaction-id="${serialNumber}" title="Send Email"><i class="fa-duotone fa-solid fa-envelope"></i></button>
+                            <button class="email-btn" style="display: none;" data-transaction-id="${serialNumber}" title="Send Email"><i class="fa-duotone fa-solid fa-envelope"></i></button>
                             <button class="print-btn" data-transaction-id="${serialNumber}" title="Print Receipt"><i class="fa-duotone fa-solid fa-print"></i></button>
                         </div>
                     </div>
