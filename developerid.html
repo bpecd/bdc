@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="shortcut icon" href="logo.png">
+    <link rel="shortcut icon" href="title.png">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-thin.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-solid.css">
@@ -228,14 +228,14 @@
         }
 
         a:hover {
-            background-color: #dbdbfd;
+            background-color: #b2ffbf;
             padding: 0.625rem;
             border-radius: 0.938rem;
         }
 
         .top-bar .nav-items a i {
             font-size: 1.5rem;
-            color: #096faa;
+            color: #0ea126;
         }
 
         .top-bar .logo img {
@@ -372,12 +372,12 @@
         }
 
         .transaction:hover {
-            background-color: rgb(218, 225, 255);
+            background-color: rgb(194, 255, 204);
         }
 
         .transaction:hover .redirect-btn {
             transform: scale(1.1);
-            background-color: #1942c9;
+            background-color: #0c9e81;
         }
 
         .transaction i {
@@ -480,7 +480,7 @@
     <div class="top-bar">
         <div class="nav-items">
             <a class="backbtn"
-                style="cursor: pointer;color: #db049b;font-weight: bold;font-size: large;background-color: #fae6f4;padding: 0.625rem;border-radius: 0.938rem;"
+                style="cursor: pointer;color: #364fa1;font-weight: bold;font-size: large;background-color: #d0ffcf;padding: 0.625rem;border-radius: 0.938rem;"
                 id="bbkk"><i class="fa-solid fa-circle-arrow-left"></i> Back</a>
             <a style="cursor: pointer;" class="backbtn" id="nn" href="newhomme.html"><i class="fas fa-user-plus"></i>
                 New Client / Contractor</a>
@@ -784,7 +784,7 @@
         document.getElementById("sstate").innerText = devdata.status;
         document.getElementById("sname").innerText = devdata.name;
         document.title = `Project List > ${devdata.name}`;
-console.log(devdata);
+        console.log(devdata);
         const sheetid = devdata.sheetid;
         const sgid = devdata.sgid;
         const sheetUrll = `https://docs.google.com/spreadsheets/d/${sheetid}/gviz/tq?gid=${sgid}`;
@@ -1264,7 +1264,7 @@ console.log(devdata);
         ${formattedDate}
     </div>
     <div style="flex: 1; text-align: center;">
-        <button style="background-color: #0051ff;cursor: pointer;" class="redirect-btn" id="${uniqueId}">View</button>
+        <button style="background-color: #0c9e81;cursor: pointer;" class="redirect-btn" id="${uniqueId}">View</button>
     </div>
 </div>
 `

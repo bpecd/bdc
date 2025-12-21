@@ -1,7 +1,6 @@
-
 {
-  "name": "Building Plan Database",
-  "short_name": "Building Plan",
+  "name": "Buildup Construction",
+  "short_name": "Buildup Construction",
   "start_url": "/data/index.html",
   "scope": "/data/",
   "background_color": "#ffffff",
@@ -9,28 +8,27 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "/data/logo.png",
+      "src": "/data/title.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
-    },{
-      "src": "/data/icons.png",
+    },
+    {
+      "src": "/data/title.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/data/iconss.png",
+      "src": "/data/title.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
   "id": "buildingplanapp",
-  "description": "Building Plan official Data Entry webapp by @Moraladnan",
-  "categories": [
-    "productivity"
-  ],
+  "description": "Buildup Construction official Data Entry webapp by @Moraladnan",
+  "categories": ["productivity"],
   "lang": "en",
   "launch_handler": {
     "client_mode": "navigate-existing"

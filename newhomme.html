@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="logo.png">
+    <link rel="shortcut icon" href="title.png">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-thin.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-solid.css">
@@ -784,8 +784,8 @@
             document.getElementById('sheeturl').style.display = 'none';
             document.getElementById('formurl').style.display = 'none';
         });
- const devdata = JSON.parse(localStorage.getItem('devdata'));
-console.log(devdata);
+        const devdata = JSON.parse(localStorage.getItem('devdata'));
+        console.log(devdata);
         document.getElementById('regi').addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -795,7 +795,7 @@ console.log(devdata);
             registerButton.innerText = 'Working...';
 
             // Get stored data from localStorage
-           
+
             // Form field values
             const name = document.getElementById('name').value;
             const land = document.getElementById('land').value;

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 
     <title>Dashboard</title>
-    <link rel="shortcut icon" href="logo.png">
+    <link rel="shortcut icon" href="title.png">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-thin.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.1/css/sharp-duotone-solid.css">
@@ -277,7 +277,7 @@
 
         .top-bar .nav-items>a:hover,
         .top-bar .nav-items .hover-container>a:hover {
-            background-color: #ffb2f1;
+            background-color: #b2ffbf;
             padding: 0.625rem;
             border-radius: 0.625rem;
         }
@@ -315,7 +315,7 @@
         /* Icon styling */
         .top-bar .nav-items a i {
             font-size: 1.5rem;
-            color: #db049b;
+            color: #0ea126;
         }
 
         /* Logo section */
@@ -590,11 +590,14 @@
             align-items: center;
             gap: 0.5rem;
             border-radius: 0.625rem;
+            border: 2px solid #fff;
         }
 
         .top-bar .nav-items .dropdown-content a:hover {
-            background-color: #b2d7ff;
+            background-color: #b2ffb7;
             border-radius: 0.625rem;
+            
+            border: 2px solid #364fa1;
         }
 
         .dropdown:hover .dropdown-content {
@@ -602,7 +605,7 @@
         }
 
         .dropdown:hover .dropbtn {
-            background-color: #ffb2f1;
+            background-color: #b2ffb3;
             border-radius: 0.625rem;
         }
     </style>
@@ -619,7 +622,7 @@
         <div class="nav-items">
             <!-- Main Dashboard -->
             <a class="backbtn"
-                style="color: #364fa1; font-weight: bold; font-size: large; background-color: #e8ecff; padding: 0.625rem; border-radius:  0.625rem;"
+                style="color: #364fa1; font-weight: bold; font-size: large; background-color: #d0ffcf; padding: 0.625rem; border-radius:  0.625rem;"
                 href="#">
                 <i class="fa-solid fa-chart-waterfall"></i> Main Dashboard
             </a>
@@ -1114,7 +1117,7 @@
                     progressCircle.style.strokeDashoffset = offset;
 
                     // Update percentage display
-                    document.querySelector(".percentage").textContent = `${Math.round(overallPercentage) >100 ? 100 : Math.round(overallPercentage)}%`;
+                    document.querySelector(".percentage").textContent = `${Math.round(overallPercentage) > 100 ? 100 : Math.round(overallPercentage)}%`;
                 });
             }
 
