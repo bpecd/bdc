@@ -10,7 +10,7 @@ self.addEventListener("install", (event) => {
         "screenshot.png",
         "suc3.gif",
         "suc4.gif",
-        "title.png",
+        "logo_text.png",
         "lock.gif",
         "index2.gif",
         "fall.gif",
