@@ -934,7 +934,7 @@
 
                     <button class="buttonx cost-btn" id="costbtn">Cost <i class="fa-duotone fa-solid fa-circle-dollar-to-slot"></i></button><button class="buttonx receive-btn" id="recbtn">Receive <i class="fa-duotone fa-solid fa-arrow-down-to-bracket"></i></button>
                     
-                     <label style="display: none;" id="lbl">
+                     <label id="lbl">
                         <input type="checkbox" id="mailCheckbox"> Send Receive / Give mail?
                     </label>    
                 </pre>
@@ -1691,10 +1691,10 @@
         // Try first email service
         try {
           await emailjs.send(
-            "service_7albdgs",
-            "template_4oyl6vc",
+            "service_z7xcnwd",
+            "template_8bwp30u",
             emailParams,
-            "V33OVjXvWiuEWy-VD"
+            "RKNqPxMUYpIhn9HVL"
           );
           emailSent = true;
           closeEmailConfirmation(); // Close modal after success
@@ -1707,10 +1707,10 @@
         if (!emailSent) {
           try {
             await emailjs.send(
-              "service_f3ydpcl",
-              "template_o5b5lhq",
+              "service_z7xcnwd",
+              "template_8bwp30u",
               emailParams,
-              "7Atp02WPiZ4w8sYOz"
+              "RKNqPxMUYpIhn9HVL"
             );
             closeEmailConfirmation(); // Close modal after success
             showEmailSuccess(emailButton, "Email sent via backup service!");
@@ -2300,10 +2300,10 @@
           try {
             // Attempt to send the first email
             await emailjs.send(
-              "service_7albdgs",
-              "template_4oyl6vc",
+              "service_z7xcnwd",
+              "template_8bwp30u",
               emailParams,
-              "V33OVjXvWiuEWy-VD"
+              "RKNqPxMUYpIhn9HVL"
             );
             emailSents = true; // Email sent successfully
             suc.src = "mail.gif";
@@ -2322,10 +2322,10 @@
             try {
               // If the first email failed, attempt to send the second email
               await emailjs.send(
-                "service_f3ydpcl",
-                "template_o5b5lhq",
+                "service_z7xcnwd",
+                "template_8bwp30u",
                 emailParams,
-                "7Atp02WPiZ4w8sYOz"
+                "RKNqPxMUYpIhn9HVL"
               );
               suc.src = "mail.gif";
               result.style.display = "";
@@ -2515,10 +2515,10 @@
           try {
             // Attempt to send the email using the first service
             await emailjs.send(
-              "service_7albdgs",
-              "template_4oyl6vc",
+              "service_z7xcnwd",
+              "template_8bwp30u",
               emailParams,
-              "V33OVjXvWiuEWy-VD"
+              "RKNqPxMUYpIhn9HVL"
             );
             emailSent = true;
             // If the first email is successful
@@ -2539,10 +2539,10 @@
             try {
               // If the first email fails, attempt to send the second email
               await emailjs.send(
-                "service_f3ydpcl",
-                "template_o5b5lhq",
+                "service_z7xcnwd",
+                "template_8bwp30u",
                 emailParams,
-                "7Atp02WPiZ4w8sYOz"
+                "RKNqPxMUYpIhn9HVL"
               );
               suc.src = "mail.gif";
               result.style.display = "";
