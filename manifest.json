@@ -1,32 +1,32 @@
 {
-  "name": "Buildup Construction",
-  "short_name": "Buildup Construction",
-  "start_url": "/data/index.html",
-  "scope": "/data/",
+  "name": "Buildup D&C",
+  "short_name": "Buildup Design & Construction",
+  "start_url": "/bdc/index.html",
+  "scope": "/bdc/",
   "background_color": "#ffffff",
   "theme_color": "#f0f2f5",
   "display": "standalone",
   "icons": [
     {
-      "src": "/data/title.png",
+      "src": "/bdc/title.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/data/title.png",
+      "src": "/bdc/title.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/data/title.png",
+      "src": "/bdc/title.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "id": "buildingplanapp",
+  "id": "buildupdc",
   "description": "Buildup Construction official Data Entry webapp by @Moraladnan",
   "categories": ["productivity"],
   "lang": "en",
@@ -35,13 +35,13 @@
   },
   "screenshots": [
     {
-      "src": "/data/screenshot.png",
+      "src": "/bdc/screenshot.png",
       "sizes": "1280x720",
       "type": "image/png",
       "label": "Main interface"
     },
     {
-      "src": "/data/screenshot1.png",
+      "src": "/bdc/screenshot1.png",
       "sizes": "1280x720",
       "type": "image/png",
       "label": "Data entry screen"
