@@ -534,19 +534,17 @@
     </div>
     <div class="popup" id="popupx">
         <div class="popup-content">
-            <h1 id="popstxt">Your are Editing Data!</h1>
-            <input type="text" id="cellValue" class="inputField" required><br>
-            <button style="background-color: #d61f2c;" class="close-btn" onclick="location.reload()"><i
+            <h1 id="popstxt">Edit Amount Value</h1>
+            <input type="text" id="cellValue" class="inputField" oninput="formatIndianNumberInput(this)"
+                placeholder="Enter new amount" required><br>
+            <button style="background-color: #d61f2c;" class="close-btn" onclick="closeEditPopup()"><i
                     class="fa-solid fa-rectangle-xmark"></i></button>
-            <button class="close-btn" onclick="generateLink()">Edit</button>
+            <button class="close-btn" onclick="updateCellValue()">Update</button>
             <p id="result"></p>
         </div>
     </div>
 
     <div id="overlay"></div>
-    <div id="popup">
-        <iframe style="display: none;" id="iframe" src=""></iframe>
-    </div>
     <div id="loading"><img style="width: 6.25rem;height: 6.25rem;border-radius: 0.50rem;" src="edt.gif"></div>
     <div id="success"><img style="width: 6.25rem;height: 6.25rem;border-radius: 0.50rem;" src="done.gif"></div>
     <div class="container1">
@@ -603,6 +601,14 @@
 
 
     <script>
+        // Google Apps Script Web App URL - Replace with your deployed script URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI_nL1IACsJT1DSAthm9kReuXMksrZOinw6zUHwpzU9IY5DdjiCj7ZFwYvlHMr1D2wDQ/exec';
+        const SHEET_ID = '1ibCKPs-WZJeDHdqauIIAZKNu3M1ZW7HCCi3cudsvKdE';
+        const SHEET_NAME = 'Form Responses 1'; // Update with your actual sheet name
+
+        let editingRow = null;
+        let editingColumn = null;
+
         function formatNumber2(num) {
             // Convert number to an absolute value for formatting
             let numStr = Math.abs(num).toString(); // Ignore sign for formatting
@@ -804,30 +810,43 @@
                     amount,
                 });
 
+                // Determine if edit button should be shown based on user permissions
+                const canEdit = stt === 'admin' || stt === 'mod';
+                const editButton = canEdit ? `
+                    <button 
+                        class="edit-btn" 
+                        onclick="openEditPopup(${serialNumber}, 'D', ${amount})" 
+                        style="background: none; border: none; cursor: pointer; color: #364fa1; font-size: 1.125rem; padding: 0 0.313rem;" 
+                        title="Edit amount">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                ` : '';
+
                 // Append the transaction row to the container
                 container.innerHTML += `
             <div class="transaction ${rowClass}" style="display: flex; flex-direction: column; padding: 0.625rem 0.938rem; border-bottom: 0.063rem solid #ddd;">
-                <div style="display: flex; justify-content: space-between;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div 
-                        style="flex: 1; text-align: left; cursor: pointer;" 
+                        style="flex: 1; text-align: left;" 
                         class="transaction-name" 
                         data-transaction-id="${serialNumber}" 
                         data-column="C">
                         ${name}
                     </div>
                     <div 
-                        style="text-align: left; cursor: pointer;" 
+                        style="text-align: left;" 
                         class="transaction-description" 
                         data-transaction-id="${serialNumber}" 
                         data-column="B">
                         ${description}
                     </div>
                     <div 
-                        style="flex: 1; text-align: right; cursor: pointer;" 
+                        style="flex: 1; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 0.313rem;" 
                         class="transaction-amount ${amount > 0 ? 'credit' : amount < 0 ? 'debit' : 'neutral'}" 
                         data-transaction-id="${serialNumber}" 
                         data-column="D">
-                        ${formattedAmount}
+                        <span>${formattedAmount}</span>
+                        ${editButton}
                     </div>
                 </div>
             </div>
@@ -918,6 +937,99 @@
                 document.getElementById('result222').innerText = `Error Please Contact App Admin`;
             }
         });
+
+        // Edit functionality functions
+        function openEditPopup(row, column, currentValue) {
+            editingRow = row;
+            editingColumn = column;
+
+            // Format the current value with commas for display
+            const formattedValue = formatNumber2(Math.abs(currentValue));
+            document.getElementById('cellValue').value = formattedValue;
+
+            // Show popup
+            document.getElementById('popupx').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeEditPopup() {
+            document.getElementById('popupx').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('cellValue').value = '';
+            document.getElementById('result').textContent = '';
+            editingRow = null;
+            editingColumn = null;
+        }
+
+        function updateCellValue() {
+            const cellValueInput = document.getElementById('cellValue');
+            const resultElement = document.getElementById('result');
+
+            // Remove commas from the input value
+            const rawValue = cellValueInput.value.replace(/,/g, '');
+            const newValue = parseFloat(rawValue);
+
+            if (isNaN(newValue)) {
+                resultElement.textContent = 'Please enter a valid number';
+                resultElement.style.color = 'red';
+                return;
+            }
+
+            if (!editingRow || !editingColumn) {
+                resultElement.textContent = 'Error: No cell selected';
+                resultElement.style.color = 'red';
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popupx').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            // Prepare the data for Google Apps Script
+            const columnMap = { 'B': 2, 'C': 3, 'D': 4 };
+            const payload = {
+                sheetId: SHEET_ID,
+                sheetName: SHEET_NAME,
+                action: 'updateCell',
+                row: editingRow,
+                column: columnMap[editingColumn],
+                value: newValue
+            };
+
+            // Call Google Apps Script
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('success').style.display = 'block';
+
+                    setTimeout(() => {
+                        document.getElementById('success').style.display = 'none';
+                        closeEditPopup();
+                        location.reload();
+                    }, 1500);
+                })
+                .catch(error => {
+                    console.error('Error updating cell:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('popupx').classList.add('active');
+                    document.getElementById('overlay').classList.add('active');
+                    resultElement.textContent = 'Update sent (refresh to see changes)';
+                    resultElement.style.color = '#2a23ff';
+
+                    setTimeout(() => {
+                        closeEditPopup();
+                        location.reload();
+                    }, 2000);
+                });
+        }
     </script>
 </body>
 
