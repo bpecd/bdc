@@ -25,7 +25,7 @@ self.addEventListener("install", (event) => {
         "mail.gif",
         "index.gif",
       ]);
-    })
+    }),
   );
 });
 
@@ -33,6 +33,6 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);
-    })
+    }),
   );
 });
