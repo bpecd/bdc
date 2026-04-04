@@ -1027,7 +1027,7 @@
 
       <p>
         <span style="color: red"
-          >*Some owner's first installment is not visible but still
+          >*Old owner's first installment is not visible but still
           included.</span
         >
       </p>
@@ -1489,7 +1489,7 @@
                 }
 
                 let printfunding = "0";
-                const printStates1 = ["owner", "client"];
+                const printStates1 = ["owner", "client", "customer", "company"];
                 const printStates2 = [
                   "constructor",
                   "contractor",
@@ -1777,7 +1777,7 @@
           // Get current totals
           let totalPaid = "0";
           const state = checksta.toLowerCase().replace(/\s+/g, "");
-          const printStates1 = ["owner", "client"];
+          const printStates1 = ["owner", "client", "customer", "company"];
           const printStates2 = [
             "material",
             "constructor",

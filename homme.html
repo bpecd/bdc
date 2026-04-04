@@ -1264,7 +1264,11 @@
             ? ""
             : "none";
 
-          if (["client", "land owner", "flat owner", "owner"].includes(state)) {
+          if (
+            ["client", "land owner", "flat owner", "owner", "company"].includes(
+              state,
+            )
+          ) {
             showbtn2.style.display = "none";
             showbtn.style.display = "none";
           } else if (["other"].includes(state)) {
@@ -1733,7 +1737,13 @@
                 let printfunding = "0";
                 const state = cldata.state.toLowerCase().replace(/\s+/g, "");
 
-                const printStates1 = ["owner", "client"];
+                const printStates1 = [
+                  "owner",
+                  "client",
+                  "land owner",
+                  "flat owner",
+                  "company",
+                ];
                 const printStates2 = [
                   "material",
                   "constructor",
@@ -2012,7 +2022,13 @@
           // Get current totals
           let totalPaid = "0";
           const state = cldata.state.toLowerCase().replace(/\s+/g, "");
-          const printStates1 = ["owner", "client"];
+          const printStates1 = [
+            "owner",
+            "client",
+            "land owner",
+            "flat owner",
+            "company",
+          ];
           const printStates2 = [
             "material",
             "constructor",
