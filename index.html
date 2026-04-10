@@ -1,278 +1,267 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-  <head>
-    <link rel="manifest" href="/bdc/manifest.json" />
-    <link rel="shortcut icon" href="logo_sm.png" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="fontawesome/css/all.css" />
 
-    <title>Sign In</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
+<head>
+  <link rel="manifest" href="/bdc/manifest.json" />
+  <link rel="shortcut icon" href="logo_sm.png" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="fontawesome/css/all.css" />
 
-  <body>
-    <div class="popup" id="popup">
-      <div class="popup-content">
-        <img src="logo.gif" alt="logo" />
-      </div>
+  <title>Sign In</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <img src="logo.gif" alt="logo" />
     </div>
+  </div>
 
-    <div class="login-container">
-      <div class="content">
-        <div class="logo-wrapper">
-          <img id="log" src="logo_text.png" alt="Logo" class="logo" />
+  <div class="login-container">
+    <div class="content">
+      <div class="logo-wrapper">
+        <img id="log" src="logo_text.png" alt="Logo" class="logo" />
+      </div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="phonenumber">Mobile Number</label>
+          <div class="field">
+            <span class="icon fa-solid fa-mobile"></span>
+            <input id="phonenumber" name="username" type="text" maxlength="12" placeholder="Enter your mobile number"
+              autocomplete="username" required />
+          </div>
         </div>
 
-        <form id="loginForm">
-          <div class="input-group">
-            <label for="phonenumber">Mobile Number</label>
-            <div class="field">
-              <span class="icon fa-solid fa-mobile"></span>
-              <input
-                id="phonenumber"
-                name="username"
-                type="text"
-                maxlength="12"
-                placeholder="Enter your mobile number"
-                autocomplete="username"
-                required
-              />
-            </div>
+        <div class="input-group">
+          <label for="pin">Password</label>
+          <div class="field">
+            <span class="icon fa-solid fa-lock"></span>
+            <input id="pin" name="password" type="password" placeholder="Enter your password"
+              autocomplete="current-password" required />
+            <span id="eye" class="toggle-password fa-solid fa-eye"></span>
           </div>
+        </div>
 
-          <div class="input-group">
-            <label for="pin">Password</label>
-            <div class="field">
-              <span class="icon fa-solid fa-lock"></span>
-              <input
-                id="pin"
-                name="password"
-                type="password"
-                placeholder="Enter your password"
-                autocomplete="current-password"
-                required
-              />
-              <span id="eye" class="toggle-password fa-solid fa-eye"></span>
-            </div>
-          </div>
+        <button type="submit" id="sub" class="button">
+          <span>Sign In</span>
+          <i id="icon" class="fa-solid fa-arrow-right"></i>
+        </button>
 
-          <button type="submit" id="sub" class="button">
-            <span>Sign In</span>
-            <i id="icon" class="fa-solid fa-arrow-right"></i>
-          </button>
-
-          <div class="forgot-passx">
-            <a id="newidl" href="verify.html">Sign in to another account</a>
-          </div>
-        </form>
-      </div>
+        <div class="forgot-passx">
+          <a id="newidl" href="verify.html">Sign in to another account</a>
+        </div>
+      </form>
     </div>
-    <script>
-      let audioPlayed = false;
-      const audioElementn = new Audio("nyr.mp3");
+  </div>
+  <script>
+    let audioPlayed = false;
+    const audioElementn = new Audio("nyr.mp3");
 
-      // Preload the audio
-      audioElementn.preload = "auto";
-      audioElementn.load();
-      document.body.addEventListener("contextmenu", function (event) {
-        event.preventDefault(); // Prevent the right-click context menu
-      }); // Stop the confetti after 3 seconds
-      function requestNotificationPermission() {
-        if ("Notification" in window) {
-          Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-              console.log("Notification permission granted.");
-            } else {
-              console.log("Notification permission denied.");
-            }
-          });
-        } else {
-          console.log("Notifications are not supported by your browser.");
-        }
+    // Preload the audio
+    audioElementn.preload = "auto";
+    audioElementn.load();
+    document.body.addEventListener("contextmenu", function (event) {
+      event.preventDefault(); // Prevent the right-click context menu
+    }); // Stop the confetti after 3 seconds
+    function requestNotificationPermission() {
+      if ("Notification" in window) {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      } else {
+        console.log("Notifications are not supported by your browser.");
       }
+    }
 
-      // Function to send the first notification
-      function sendNotification() {
-        if ("Notification" in window && Notification.permission === "granted") {
-          const options = {
-            body: "Happy New Year!",
-            icon: "logo_text.png", // Example placeholder icon
-            tag: "2025n", // Ensures the notification is not duplicated
-          };
+    // Function to send the first notification
+    function sendNotification() {
+      if ("Notification" in window && Notification.permission === "granted") {
+        const options = {
+          body: "Happy New Year!",
+          icon: "logo_text.png", // Example placeholder icon
+          tag: "2025n", // Ensures the notification is not duplicated
+        };
 
-          new Notification("Updated!", options);
-        } else {
-          console.log("Notification permission is not granted or unsupported.");
-        }
+        new Notification("Updated!", options);
+      } else {
+        console.log("Notification permission is not granted or unsupported.");
       }
+    }
 
-      // Function to send the second notification
-      function sendNotification2() {
-        if ("Notification" in window && Notification.permission === "granted") {
-          const options = {
-            body: "2025 here!",
-            icon: "logo_text.png", // Example placeholder icon
-            tag: "2025", // Ensures the notification is not duplicated
-          };
+    // Function to send the second notification
+    function sendNotification2() {
+      if ("Notification" in window && Notification.permission === "granted") {
+        const options = {
+          body: "2025 here!",
+          icon: "logo_text.png", // Example placeholder icon
+          tag: "2025", // Ensures the notification is not duplicated
+        };
 
-          new Notification("Welcome!", options);
-        } else {
-          console.log("Notification permission is not granted or unsupported.");
-        }
+        new Notification("Welcome!", options);
+      } else {
+        console.log("Notification permission is not granted or unsupported.");
       }
+    }
 
-      // Event listener for the user to interact (trigger notifications)
-      document.addEventListener("DOMContentLoaded", () => {
-        requestNotificationPermission();
-      });
+    // Event listener for the user to interact (trigger notifications)
+    document.addEventListener("DOMContentLoaded", () => {
+      requestNotificationPermission();
+    });
 
-      function showpp() {
-        document.getElementById("popup").classList.add("active");
-        setTimeout(() => {
-          clearInterval(confettiInterval);
-        }, 3500);
-        if (!audioPlayed) {
-          audioElementn.play().catch((error) => {
-            console.error("Audio playback failed:", error);
-          });
-          audioPlayed = true;
-        }
+    function showpp() {
+      document.getElementById("popup").classList.add("active");
+      setTimeout(() => {
+        clearInterval(confettiInterval);
+      }, 3500);
+      if (!audioPlayed) {
+        audioElementn.play().catch((error) => {
+          console.error("Audio playback failed:", error);
+        });
+        audioPlayed = true;
       }
-      let r = "sheetCellValue";
+    }
+    let r = "sheetCellValue";
 
-      function o() {
-        console.log("Closing popup");
-        const popupElement = document.getElementById("popup");
-        if (popupElement) {
-          popupElement.classList.remove("active");
-        } else {
-          console.warn("Popup element not found");
-        }
-        localStorage.setItem("popupShown", "true");
+    function o() {
+      console.log("Closing popup");
+      const popupElement = document.getElementById("popup");
+      if (popupElement) {
+        popupElement.classList.remove("active");
+      } else {
+        console.warn("Popup element not found");
       }
+      localStorage.setItem("popupShown", "true");
+    }
 
-      async function a() {
-        try {
-          let e = await fetch(
-            "https://docs.google.com/spreadsheets/d/1VvKwtRmRSLy-eLCQfeCDeN6xT_vv-Gw5CsXbjcwcpxw/htmlview",
+    async function a() {
+      try {
+        let e = await fetch(
+          "https://docs.google.com/spreadsheets/d/1VvKwtRmRSLy-eLCQfeCDeN6xT_vv-Gw5CsXbjcwcpxw/htmlview",
+        );
+        if (!e.ok) {
+          throw new Error(
+            `Failed to fetch Google Sheets: ${e.status} ${e.statusText}`,
           );
-          if (!e.ok) {
-            throw new Error(
-              `Failed to fetch Google Sheets: ${e.status} ${e.statusText}`,
-            );
-          }
-          let t = await e.text(),
-            n = new DOMParser(),
-            l = n.parseFromString(t, "text/html"),
-            cell = l.querySelector(
-              "table tbody tr:nth-child(2) td:nth-child(5)",
-            ); // Row 2, Column 5
-
-          if (!cell) {
-            console.warn("Targeted cell not found in fetched document");
-            return;
-          }
-
-          let o = cell.innerText;
-          console.log("Fetched cell value:", o);
-
-          let a = localStorage.getItem(r);
-          console.log("Stored cell value:", a);
-
-          if (o !== a) {
-            localStorage.setItem(r, o);
-            localStorage.removeItem("popupShown");
-          }
-
-          if (localStorage.getItem("popupShown") !== "true") {
-            console.log("Showing popup");
-            const popupElement = document.getElementById("popupnone");
-            if (popupElement) {
-              sendNotification();
-              setTimeout(() => {
-                clearInterval(confettiInterval);
-              }, 3500);
-              if (!audioPlayed) {
-                audioElementn.play().catch((error) => {
-                  console.error("Audio playback failed:", error);
-                });
-                audioPlayed = true;
-              }
-
-              popupElement.classList.add("active");
-            } else {
-              console.log("Popup element not found");
-            }
-          }
-        } catch (i) {
-          console.error("Error fetching data from Google Sheets:", i);
         }
-      }
+        let t = await e.text(),
+          n = new DOMParser(),
+          l = n.parseFromString(t, "text/html"),
+          cell = l.querySelector(
+            "table tbody tr:nth-child(2) td:nth-child(5)",
+          ); // Row 2, Column 5
 
-      document.addEventListener("DOMContentLoaded", function () {
-        a(); // Fetch data and handle popup logic
-      });
+        if (!cell) {
+          console.warn("Targeted cell not found in fetched document");
+          return;
+        }
 
-      function closePopup() {
-        console.log("closePopup function called");
-        const popupElement = document.getElementById("popup");
-        setTimeout(function () {
-          if (popupElement && localStorage.getItem("popupShown") !== true) {
-            console.log("Popup element found");
-            popupElement.classList.remove("active");
+        let o = cell.innerText;
+        console.log("Fetched cell value:", o);
+
+        let a = localStorage.getItem(r);
+        console.log("Stored cell value:", a);
+
+        if (o !== a) {
+          localStorage.setItem(r, o);
+          localStorage.removeItem("popupShown");
+        }
+
+        if (localStorage.getItem("popupShown") !== "true") {
+          console.log("Showing popup");
+          const popupElement = document.getElementById("popupnone");
+          if (popupElement) {
+            sendNotification();
+            setTimeout(() => {
+              clearInterval(confettiInterval);
+            }, 3500);
+            if (!audioPlayed) {
+              audioElementn.play().catch((error) => {
+                console.error("Audio playback failed:", error);
+              });
+              audioPlayed = true;
+            }
+
+            popupElement.classList.add("active");
           } else {
             console.log("Popup element not found");
           }
-          localStorage.setItem("popupShown", "true"); // Mark as shown
-        }, 500);
+        }
+      } catch (i) {
+        console.error("Error fetching data from Google Sheets:", i);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      a(); // Fetch data and handle popup logic
+    });
+
+    function closePopup() {
+      console.log("closePopup function called");
+      const popupElement = document.getElementById("popup");
+      setTimeout(function () {
+        if (popupElement && localStorage.getItem("popupShown") !== true) {
+          console.log("Popup element found");
+          popupElement.classList.remove("active");
+        } else {
+          console.log("Popup element not found");
+        }
+        localStorage.setItem("popupShown", "true"); // Mark as shown
+      }, 500);
+      if (popupElement) {
+        sendNotification2();
+        console.log("Popup element found");
+        popupElement.classList.remove("active");
+      } else {
+        console.warn("Popup element not found");
+      }
+      localStorage.setItem("popupShown", "true"); // Mark as shown
+    }
+    const popupOverlay = document.getElementById("popup");
+    popupOverlay.addEventListener("click", function (e) {
+      if (e.target === popupOverlay) {
+        console.log("closePopup function called");
+        const popupElement = document.getElementById("popup");
         if (popupElement) {
-          sendNotification2();
           console.log("Popup element found");
           popupElement.classList.remove("active");
         } else {
           console.warn("Popup element not found");
         }
         localStorage.setItem("popupShown", "true"); // Mark as shown
+        // Hide the popup
       }
-      const popupOverlay = document.getElementById("popup");
-      popupOverlay.addEventListener("click", function (e) {
-        if (e.target === popupOverlay) {
-          console.log("closePopup function called");
-          const popupElement = document.getElementById("popup");
-          if (popupElement) {
-            console.log("Popup element found");
-            popupElement.classList.remove("active");
-          } else {
-            console.warn("Popup element not found");
-          }
-          localStorage.setItem("popupShown", "true"); // Mark as shown
-          // Hide the popup
-        }
-      });
+    });
 
-      const togglePassword = document.querySelector("#eye");
-      const passwordField = document.querySelector("#pin");
+    const togglePassword = document.querySelector("#eye");
+    const passwordField = document.querySelector("#pin");
 
-      togglePassword.addEventListener("click", function () {
-        // Toggle the type attribute
-        const type =
-          passwordField.getAttribute("type") === "password"
-            ? "text"
-            : "password";
-        passwordField.setAttribute("type", type);
-        if (togglePassword.classList.contains("fa-lock-keyhole")) {
-          togglePassword.classList.remove("fa-lock-keyhole");
-          togglePassword.classList.add("fa-lock-a");
-          togglePassword.classList.remove("fa-duotone"); // Remove fa-duotone when toggling to fa-lock-a
-        } else {
-          togglePassword.classList.remove("fa-lock-a");
-          togglePassword.classList.add("fa-lock-keyhole");
-          togglePassword.classList.add("fa-duotone"); // Add fa-duotone back when toggling to fa-lock-keyhole
-        }
-      });
-    </script>
-    <script src="index.js"></script>
-  </body>
+    togglePassword.addEventListener("click", function () {
+      // Toggle the type attribute
+      const type =
+        passwordField.getAttribute("type") === "password"
+          ? "text"
+          : "password";
+      passwordField.setAttribute("type", type);
+      if (togglePassword.classList.contains("fa-lock-keyhole")) {
+        togglePassword.classList.remove("fa-lock-keyhole");
+        togglePassword.classList.add("fa-lock-a");
+        // Hiding password - using lock icon
+      } else {
+        togglePassword.classList.remove("fa-lock-a");
+        togglePassword.classList.add("fa-lock-keyhole");
+        // Showing password - using keyhole icon
+      }
+    });
+  </script>
+  <script src="index.js"></script>
+</body>
+
 </html>
