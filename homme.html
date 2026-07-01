@@ -875,6 +875,15 @@
                 " id="total-pdue"></span>
             BDT
           </div>
+          <div class="balance-info">
+            &nbsp;|&nbsp; Has:
+            <span style="
+                  color: rgb(214, 9, 177);
+                  font-family: &quot;Arial Black&quot;, sans-serif;
+                  font-size: 1.75rem;
+                " id="in-hand"></span>
+            BDT
+          </div>
         </div>
       </div>
     </div>
@@ -908,6 +917,13 @@
               background-color: rgb(117, 255, 138);
             " class="buttonx cost-btn" id="Entry">
           New Entry
+        </button>
+        <button style="
+              cursor: pointer;
+              color: #000;
+              background-color: rgb(255, 214, 130);
+            " class="buttonx cost-btn" id="Given">
+          Given
         </button>
         <button style="
               cursor: pointer;
@@ -1002,6 +1018,14 @@
                     <label id="lbl">
                         <input type="checkbox" id="mailCheckbox"> Send Give / Receive mail?
                     </label>    
+                </pre>
+        </div>
+        <div style="display: none" id="buttonsGiven" class="buttons">
+          <pre>
+<button class="claim-button1" onclick="location.reload()"><i class="fa-solid fa-turn-left"></i></button>
+                    <input id="greason" class="button" placeholder="Reason">
+                    <input id="gamount" class="button" oninput="formatIndianNumberInput(this)" placeholder="Amount">
+                    <button class="buttonx cost-btn" id="gcostbtn">Given <i class="fa-solid fa-arrow-up-from-bracket"></i></button>
                 </pre>
         </div>
       </div>
@@ -1109,6 +1133,7 @@
     const stt = e.state;
     if (stt !== "admin") {
       document.getElementById("Entry").style.display = "none";
+      document.getElementById("Given").style.display = "none";
       document.getElementById("lbcost").style.display = "none";
       document.getElementById("adcost").style.display = "none";
       document.getElementById("shtl").style.display = "none";
@@ -1154,6 +1179,17 @@
 
       showbtn3.addEventListener("click", function () {
         btns3.style.display = "block";
+        showbtn3.style.display = "none";
+        showbtn2.style.display = "none";
+        showbtn.style.display = "none";
+      });
+
+      const showbtnG = document.getElementById("Given");
+      const btnsG = document.getElementById("buttonsGiven");
+      showbtnG.addEventListener("click", function () {
+        btnsG.style.display = "block";
+        btns3.style.display = "none";
+        showbtnG.style.display = "none";
         showbtn3.style.display = "none";
         showbtn2.style.display = "none";
         showbtn.style.display = "none";
@@ -1404,6 +1440,10 @@
           pdueElem.style.color = "green";
           pdueElem.style.fontWeight = "normal";
         }
+        const inhandElem0 = document.getElementById("in-hand");
+        if (inhandElem0) {
+          inhandElem0.textContent = formatNumber2(0);
+        }
         return 0;
       }
 
@@ -1492,6 +1532,25 @@
         console.error("Payment due element (total-pdue) not found in DOM");
       }
 
+      // In hand = total "Given #amount" amounts - total cost (never below 0)
+      let givenTotal = 0;
+      transactions.forEach((t) => {
+        const gm = (t.Description || "").match(/^Given\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        if (gm) givenTotal += parseFloat(gm[1].replace(/,/g, "")) || 0;
+      });
+      const totalCostVal =
+        parseFloat(
+          (document.getElementById("total-cost")?.innerText || "0").replace(
+            /[^\d.]/g,
+            "",
+          ),
+        ) || 0;
+      const inHand = Math.max(givenTotal - totalCostVal, 0);
+      const inhandElem = document.getElementById("in-hand");
+      if (inhandElem) {
+        inhandElem.textContent = formatNumber2(inHand);
+      }
+
       return dueamt; // Return the calculated amount for potential use elsewhere
     }
 
@@ -1557,6 +1616,12 @@
 
         let formattedDate = smartDateConversion(rawDate);
 
+        // Given entry: extract amount from "Given #amount" description
+        const givenMatch = Description.match(/^Given\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        const givenAmount = givenMatch
+          ? parseFloat(givenMatch[1].replace(/,/g, "")) || 0
+          : 0;
+
         const uniqueId = `viewbtn-${serialNumber}`;
         transactions.push({
           Description,
@@ -1567,14 +1632,16 @@
           formattedDate,
         });
 
-        const formattedAmount = `${Amount > 0 ? `+ ৳${formatNumber2(Amount)}` : Amount < 0 ? `- ৳${formatNumber2(Amount)}` : "Due"} `;
+        const formattedAmount = givenMatch
+          ? `৳${formatNumber2(givenAmount)} `
+          : `${Amount > 0 ? `+ ৳${formatNumber2(Amount)}` : Amount < 0 ? `- ৳${formatNumber2(Amount)}` : "Due"} `;
         const rowClass = serialNumber % 2 === 0 ? "even" : "odd";
 
         htmlContent += `
                     <div class="transaction ${rowClass}" style="display: flex; justify-content: space-between;" data-transaction-id="${serialNumber}">
                         <div style="flex: 1; text-align: center;">${formattedDate}</div>
                         <div 
-                            style="flex: 1; text-align: center; cursor: pointer;" 
+                            style="flex: 1; text-align: center; cursor: pointer;${givenMatch ? " color:#9e9e9e;" : ""}" 
                             class="transaction-description" 
                             data-transaction-id="${serialNumber}" 
                             data-column="B">
@@ -1589,7 +1656,7 @@
                         </div>
                         <div 
                             style="flex: 1; text-align: center; cursor: pointer;" 
-                            class="transaction-amount ${Amount > 0 ? "credit" : Amount < 0 ? "debit" : "neutral"}" 
+                            class="transaction-amount ${givenMatch ? "neutral" : Amount > 0 ? "credit" : Amount < 0 ? "debit" : "neutral"}" 
                             data-transaction-id="${serialNumber}" 
                             data-column="D">
                             ${formattedAmount}
@@ -2440,6 +2507,80 @@
     const buttons22 = document.getElementById("buttons22");
     const fall = document.getElementById("fall");
     const dermsg2 = document.getElementById("ereason").value;
+
+    // Given entry: records "Given #amount" in description, amount stays 0
+    const gcostbtn = document.getElementById("gcostbtn");
+    if (gcostbtn) {
+      gcostbtn.addEventListener("click", function () {
+        gcostbtn.style.opacity = "0.5";
+        gcostbtn.innerText = "wait....";
+        gcostbtn.disabled = true;
+        const devdata = JSON.parse(localStorage.getItem("devdata"));
+        const cldata = JSON.parse(localStorage.getItem("cldata"));
+        const amount = parseFloat(
+          document.getElementById("gamount").value.replace(/,/g, ""),
+        );
+        if (isNaN(amount) || amount < 0) {
+          result.style.display = "";
+          result.style.color = "#cf1919";
+          result.innerText = "Enter a valid amount";
+          gcostbtn.style.opacity = "1";
+          gcostbtn.innerText = "Given";
+          gcostbtn.disabled = false;
+          return;
+        }
+        const description = `Given #${amount}`;
+        const reason = document.getElementById("greason").value.trim() || "Given";
+        const googleFormsData = [
+          {
+            url: `https://docs.google.com/forms/u/0/d/e/${cldata.formid}/formResponse`,
+            entries: {
+              reason: `entry.${cldata.srentry}`,
+              amount: `entry.${cldata.saentry}`,
+              description: `entry.${cldata.sdentry}`,
+            },
+          },
+          {
+            url: `https://docs.google.com/forms/u/0/d/e/${devdata.formid}/formResponse`,
+            entries: {
+              reason: `entry.${devdata.srentry}`,
+              amount: `entry.${devdata.saentry}`,
+              description: `entry.${devdata.sdentry}`,
+            },
+          },
+        ];
+        googleFormsData.forEach((form) => {
+          const formData = new FormData();
+          formData.append(form.entries.amount, "0");
+          formData.append(form.entries.description, description);
+          formData.append(form.entries.reason, reason);
+          fetch(form.url, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams(formData),
+          })
+            .then(() => {
+              suc.style.display = "";
+              suc.src = "suc4.gif";
+              result.style.display = "";
+              document.getElementById("buttonsGiven").style.display = "none";
+              result.innerText = `Transaction Complete`;
+              gcostbtn.style.display = "none";
+              setTimeout(() => {
+                location.reload();
+              }, 2200);
+            })
+            .catch((error) => {
+              document.getElementById("buttonsGiven").style.display = "none";
+              fall.style.display = "";
+              result.style.display = "";
+              result.style.color = "#cf1919";
+              result.innerText = `transaction error: ${error}`;
+              gcostbtn.style.display = "none";
+            });
+        });
+      });
+    }
 
     ecostbtn.addEventListener("click", function (e) {
       let audioPlayed = false;

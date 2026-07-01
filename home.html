@@ -1325,19 +1325,22 @@
 
       function enterCashMode() {
         if (window._cashInHandValue === null) return; // data not ready
-        // Only show if cash is not negative
-        if (window._cashInHandValue < 0) return;
 
         cashModeActive = true;
         balanceCard.classList.add("cash-mode");
-        balanceLabel.textContent = "Cash in Hand";
+        balanceLabel.textContent = "Available Cash";
 
-        // Show cash value with animated text
-        const cashDisplay = window._cashInHandValue;
-        balanceEl.style.color = "rgb(4, 119, 4)";
-        displayAnimatedText("balance", formatNumber(cashDisplay));
+        if (window._cashInHandValue >= 0) {
+          // Positive — show value with animated text
+          balanceEl.style.color = "rgb(4, 119, 4)";
+          displayAnimatedText("balance", formatNumber(window._cashInHandValue));
+        } else {
+          // Negative — show grey dash, no value revealed
+          balanceEl.innerHTML = "&#8212;";
+          balanceEl.style.color = "#aaaaaa";
+        }
 
-        startCashCountdown(5000);
+        startCashCountdown(10000);
       }
 
       function exitCashMode() {
