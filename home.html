@@ -596,6 +596,25 @@
       background-color: #b2ffb3;
       border-radius: 0.625rem;
     }
+
+    /* Cash-in-hand eye icon */
+    #balance-card:hover #cash-eye-btn {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    #cash-eye-btn:hover {
+      background: rgba(255,255,255,0.35) !important;
+      transform: scale(1.2);
+    }
+    /* When cash mode is active, always show eye icon */
+    #balance-card.cash-mode #cash-eye-btn {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      color: #ffe066 !important;
+    }
+    #balance-card.cash-mode .stat-label {
+      color: #ffe066;
+    }
   </style>
 </head>
 
@@ -812,11 +831,24 @@
           </div>
         </div>
       </div>
-      <div class="stat-card" style="--bg-color: #006fca; width: 21.875rem; margin-left: 1.25rem">
+      <div class="stat-card" id="balance-card" style="--bg-color: #006fca; width: 21.875rem; margin-left: 1.25rem">
         <div class="stat-content">
           <i class="stat-icon fa-solid fa-money-check-dollar"></i>
           <div class="stat-info">
-            <div class="stat-label">Available Balance</div>
+            <div style="display:flex;align-items:center;gap:0.4rem;">
+              <div class="stat-label" id="balance-label">Available Balance</div>
+              <i class="fa-solid fa-eye" id="cash-eye-btn" title="Show Cash in Hand" style="
+                font-size:1rem;
+                color:#fff;
+                opacity:0;
+                cursor:pointer;
+                transition:opacity 0.3s ease,transform 0.2s ease;
+                pointer-events:none;
+                padding:0.2rem 0.35rem;
+                border-radius:0.4rem;
+                background:rgba(255,255,255,0.18);
+              "></i>
+            </div>
             <div class="stat-number" style="
                   color: rgb(4, 119, 4);
                   padding: 0.313rem;
@@ -1184,6 +1216,10 @@
           balanceDisplay.style.color = "rgb(4, 119, 4)";
         }
 
+        // Store values for cash-in-hand feature
+        window._balanceValue    = balanceValue;
+        window._cashInHandValue = balanceValue - bankBalance - loanAmount;
+
         // Display totals and balance
         displayAnimatedText("total-cost", formatNumber(totalcost));
         displayAnimatedText("total-receive", formatNumber(totalreceive));
@@ -1248,6 +1284,94 @@
 
       // Start fetching data
       fetchAllData();
+
+      // ── Cash-in-Hand Eye Feature ──────────────────────────────────────────
+      const balanceCard  = document.getElementById("balance-card");
+      const balanceLabel = document.getElementById("balance-label");
+      const eyeBtn       = document.getElementById("cash-eye-btn");
+      const balanceEl    = document.getElementById("balance");
+
+      let cashModeActive   = false;
+      let cashTimeout      = null;
+      let remainingMs      = 0;
+      let tickStart        = null;
+      let isHoveringCard   = false;
+
+      // Stored values set by updateCalculationsAndProgress
+      window._cashInHandValue  = null; // computed once data is ready
+      window._balanceValue     = null;
+
+      function startCashCountdown(ms) {
+        remainingMs = ms;
+        tickStart   = Date.now();
+
+        clearTimeout(cashTimeout);
+        cashTimeout = setTimeout(exitCashMode, remainingMs);
+      }
+
+      function pauseCashCountdown() {
+        if (!cashModeActive) return;
+        clearTimeout(cashTimeout);
+        remainingMs -= (Date.now() - tickStart);
+        if (remainingMs < 0) remainingMs = 0;
+      }
+
+      function resumeCashCountdown() {
+        if (!cashModeActive) return;
+        tickStart   = Date.now();
+        clearTimeout(cashTimeout);
+        cashTimeout = setTimeout(exitCashMode, remainingMs);
+      }
+
+      function enterCashMode() {
+        if (window._cashInHandValue === null) return; // data not ready
+        // Only show if cash is not negative
+        if (window._cashInHandValue < 0) return;
+
+        cashModeActive = true;
+        balanceCard.classList.add("cash-mode");
+        balanceLabel.textContent = "Cash in Hand";
+
+        // Show cash value with animated text
+        const cashDisplay = window._cashInHandValue;
+        balanceEl.style.color = "rgb(4, 119, 4)";
+        displayAnimatedText("balance", formatNumber(cashDisplay));
+
+        startCashCountdown(5000);
+      }
+
+      function exitCashMode() {
+        cashModeActive = false;
+        clearTimeout(cashTimeout);
+        balanceCard.classList.remove("cash-mode");
+        balanceLabel.textContent = "Available Balance";
+
+        // Restore balance value
+        if (window._balanceValue !== null) {
+          balanceEl.style.color = window._balanceValue < 0 ? "red" : "rgb(4, 119, 4)";
+          displayAnimatedText("balance", formatNumber(window._balanceValue));
+        }
+      }
+
+      eyeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (cashModeActive) {
+          exitCashMode();
+        } else {
+          enterCashMode();
+        }
+      });
+
+      balanceCard.addEventListener("mouseenter", function () {
+        isHoveringCard = true;
+        if (cashModeActive) pauseCashCountdown();
+      });
+
+      balanceCard.addEventListener("mouseleave", function () {
+        isHoveringCard = false;
+        if (cashModeActive) resumeCashCountdown();
+      });
+      // ─────────────────────────────────────────────────────────────────────
     });
   </script>
   <script>
