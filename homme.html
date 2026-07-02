@@ -876,7 +876,7 @@
             BDT
           </div>
           <div class="balance-info">
-            &nbsp;|&nbsp; Has:
+            &nbsp;|&nbsp; Hand Cash:
             <span style="
                   color: rgb(214, 9, 177);
                   font-family: &quot;Arial Black&quot;, sans-serif;
@@ -923,7 +923,7 @@
               color: #000;
               background-color: rgb(255, 214, 130);
             " class="buttonx cost-btn" id="Given">
-          Given
+          Petty Cash
         </button>
         <button style="
               cursor: pointer;
@@ -1025,7 +1025,7 @@
 <button class="claim-button1" onclick="location.reload()"><i class="fa-solid fa-turn-left"></i></button>
                     <input id="greason" class="button" placeholder="Reason">
                     <input id="gamount" class="button" oninput="formatIndianNumberInput(this)" placeholder="Amount">
-                    <button class="buttonx cost-btn" id="gcostbtn">Given <i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+                    <button class="buttonx cost-btn" id="gcostbtn">Give <i class="fa-solid fa-arrow-up-from-bracket"></i></button>
                 </pre>
         </div>
       </div>
@@ -1532,10 +1532,10 @@
         console.error("Payment due element (total-pdue) not found in DOM");
       }
 
-      // In hand = total "Given #amount" amounts - total cost (never below 0)
+      // In hand = total "Petty Cash #amount" amounts - total cost (never below 0)
       let givenTotal = 0;
       transactions.forEach((t) => {
-        const gm = (t.Description || "").match(/^Given\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        const gm = (t.Description || "").match(/^Petty Cash\s*#\s*([\d,]+(?:\.\d+)?)/i);
         if (gm) givenTotal += parseFloat(gm[1].replace(/,/g, "")) || 0;
       });
       const totalCostVal =
@@ -1616,8 +1616,8 @@
 
         let formattedDate = smartDateConversion(rawDate);
 
-        // Given entry: extract amount from "Given #amount" description
-        const givenMatch = Description.match(/^Given\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        // Petty Cash entry: extract amount from "Petty Cash #amount" description
+        const givenMatch = Description.match(/^Petty Cash\s*#\s*([\d,]+(?:\.\d+)?)/i);
         const givenAmount = givenMatch
           ? parseFloat(givenMatch[1].replace(/,/g, "")) || 0
           : 0;
@@ -2508,7 +2508,7 @@
     const fall = document.getElementById("fall");
     const dermsg2 = document.getElementById("ereason").value;
 
-    // Given entry: records "Given #amount" in description, amount stays 0
+    // Given entry: records "Petty Cash #amount" in description, amount stays 0
     const gcostbtn = document.getElementById("gcostbtn");
     if (gcostbtn) {
       gcostbtn.addEventListener("click", function () {
@@ -2525,12 +2525,12 @@
           result.style.color = "#cf1919";
           result.innerText = "Enter a valid amount";
           gcostbtn.style.opacity = "1";
-          gcostbtn.innerText = "Given";
+          gcostbtn.innerText = "Give";
           gcostbtn.disabled = false;
           return;
         }
-        const description = `Given #${amount}`;
-        const reason = document.getElementById("greason").value.trim() || "Given";
+        const description = `Petty Cash #${amount}`;
+        const reason = document.getElementById("greason").value.trim() || "Petty Cash given";
         const googleFormsData = [
           {
             url: `https://docs.google.com/forms/u/0/d/e/${cldata.formid}/formResponse`,
