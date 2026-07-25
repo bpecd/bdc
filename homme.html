@@ -1025,7 +1025,7 @@
 <button class="claim-button1" onclick="location.reload()"><i class="fa-solid fa-turn-left"></i></button>
                     <input id="greason" class="button" placeholder="Reason">
                     <input id="gamount" class="button" oninput="formatIndianNumberInput(this)" placeholder="Amount">
-                    <button class="buttonx cost-btn" id="gcostbtn">Give <i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+                    <button class="buttonx cost-btn" id="gcostbtn">Give <i class="fa-solid fa-arrow-up-from-bracket"></i></button><button class="buttonx receive-btn" id="greducebtn">Reduce <i class="fa-solid fa-chart-line-down"></i></button>
                 </pre>
         </div>
       </div>
@@ -1161,12 +1161,14 @@
       const showbtn2 = document.getElementById("lbcost");
       const btns2 = document.getElementById("buttons22");
 
+      const showbtnG = document.getElementById("Given");
       showbtn.addEventListener("click", function () {
         btns.style.display = "block";
         btns2.style.display = "none";
         showbtn.style.display = "none";
         showbtn2.style.display = "none";
         showbtn3.style.display = "none";
+        showbtnG.style.display = "none";
       });
 
       showbtn2.addEventListener("click", function () {
@@ -1175,6 +1177,7 @@
         showbtn.style.display = "none";
         showbtn2.style.display = "none";
         showbtn3.style.display = "none";
+        showbtnG.style.display = "none";
       });
 
       showbtn3.addEventListener("click", function () {
@@ -1182,9 +1185,9 @@
         showbtn3.style.display = "none";
         showbtn2.style.display = "none";
         showbtn.style.display = "none";
+        showbtnG.style.display = "none";
       });
 
-      const showbtnG = document.getElementById("Given");
       const btnsG = document.getElementById("buttonsGiven");
       showbtnG.addEventListener("click", function () {
         btnsG.style.display = "block";
@@ -1535,7 +1538,7 @@
       // In hand = total "Petty Cash #amount" amounts - total cost (never below 0)
       let givenTotal = 0;
       transactions.forEach((t) => {
-        const gm = (t.Description || "").match(/^Petty Cash\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        const gm = (t.Description || "").match(/^Petty Cash\s*#\s*([+-]?[\d,]+(?:\.\d+)?)/i);
         if (gm) givenTotal += parseFloat(gm[1].replace(/,/g, "")) || 0;
       });
       const totalCostVal =
@@ -1617,7 +1620,7 @@
         let formattedDate = smartDateConversion(rawDate);
 
         // Petty Cash entry: extract amount from "Petty Cash #amount" description
-        const givenMatch = Description.match(/^Petty Cash\s*#\s*([\d,]+(?:\.\d+)?)/i);
+        const givenMatch = Description.match(/^Petty Cash\s*#\s*([+-]?[\d,]+(?:\.\d+)?)/i);
         const givenAmount = givenMatch
           ? parseFloat(givenMatch[1].replace(/,/g, "")) || 0
           : 0;
@@ -1633,8 +1636,10 @@
         });
 
         const formattedAmount = givenMatch
-          ? `৳${formatNumber2(givenAmount)} `
-          : `${Amount > 0 ? `+ ৳${formatNumber2(Amount)}` : Amount < 0 ? `- ৳${formatNumber2(Amount)}` : "Due"} `;
+          ? givenAmount < 0
+            ? `- ৳${formatNumber2(Math.abs(givenAmount))}`
+            : `৳${formatNumber2(givenAmount)} `
+          : `${Amount > 0 ? `+ ৳${formatNumber2(Amount)}` : Amount < 0 ? `- ৳${formatNumber2(Math.abs(Amount))}` : "Due"} `;
         const rowClass = serialNumber % 2 === 0 ? "even" : "odd";
 
         htmlContent += `
@@ -2577,6 +2582,78 @@
               result.style.color = "#cf1919";
               result.innerText = `transaction error: ${error}`;
               gcostbtn.style.display = "none";
+            });
+        });
+      });
+    }
+    const greducebtn = document.getElementById("greducebtn");
+    if (greducebtn) {
+      greducebtn.addEventListener("click", function () {
+        greducebtn.style.opacity = "0.5";
+        greducebtn.innerText = "wait....";
+        greducebtn.disabled = true;
+        const devdata = JSON.parse(localStorage.getItem("devdata"));
+        const cldata = JSON.parse(localStorage.getItem("cldata"));
+        const amount = parseFloat(
+          document.getElementById("gamount").value.replace(/,/g, ""),
+        );
+        if (isNaN(amount) || amount < 0) {
+          result.style.display = "";
+          result.style.color = "#cf1919";
+          result.innerText = "Enter a valid amount";
+          greducebtn.style.opacity = "1";
+          greducebtn.innerText = "Reduce";
+          greducebtn.disabled = false;
+          return;
+        }
+        const description = `Petty Cash #-${amount}`;
+        const reason = document.getElementById("greason").value.trim() || "Petty Cash given";
+        const googleFormsData = [
+          {
+            url: `https://docs.google.com/forms/u/0/d/e/${cldata.formid}/formResponse`,
+            entries: {
+              reason: `entry.${cldata.srentry}`,
+              amount: `entry.${cldata.saentry}`,
+              description: `entry.${cldata.sdentry}`,
+            },
+          },
+          {
+            url: `https://docs.google.com/forms/u/0/d/e/${devdata.formid}/formResponse`,
+            entries: {
+              reason: `entry.${devdata.srentry}`,
+              amount: `entry.${devdata.saentry}`,
+              description: `entry.${devdata.sdentry}`,
+            },
+          },
+        ];
+        googleFormsData.forEach((form) => {
+          const formData = new FormData();
+          formData.append(form.entries.amount, "0");
+          formData.append(form.entries.description, description);
+          formData.append(form.entries.reason, reason);
+          fetch(form.url, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams(formData),
+          })
+            .then(() => {
+              suc.style.display = "";
+              suc.src = "suc4.gif";
+              result.style.display = "";
+              document.getElementById("buttonsGiven").style.display = "none";
+              result.innerText = `Transaction Complete`;
+              greducebtn.style.display = "none";
+              setTimeout(() => {
+                location.reload();
+              }, 2200);
+            })
+            .catch((error) => {
+              document.getElementById("buttonsGiven").style.display = "none";
+              fall.style.display = "";
+              result.style.display = "";
+              result.style.color = "#cf1919";
+              result.innerText = `transaction error: ${error}`;
+              greducebtn.style.display = "none";
             });
         });
       });
