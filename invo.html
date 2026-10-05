@@ -725,27 +725,65 @@
           return lastThree;
         }
       }
+      // Required format everywhere: DD/MM/YYYY HH:MM AM/PM (Bangladesh/Indian
+      // order, uppercase AM/PM, zero-padded). Built manually — never via
+      // toLocale*(), whose order/case follows the viewer's locale and was
+      // one source of MM/DD/YYYY prints.
+      function formatBDNow() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+        let hour = now.getHours();
+        const minute = String(now.getMinutes()).padStart(2, "0");
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        hour = hour ? String(hour).padStart(2, "0") : "12";
+        return `${day}/${month}/${year} ${hour}:${minute} ${ampm}`;
+      }
+      // Normalize any incoming transaction date to DD/MM/YYYY HH:MM AM/PM.
+      // Strips legacy "<br>" separators, collapses whitespace, uppercases
+      // AM/PM and zero-pads. Treats the value as already DD/MM/YYYY (list
+      // pages convert raw US MM/DD/YYYY sheet values before storing).
+      function normalizeBDDateTime(input) {
+        if (input === null || input === undefined) return input;
+        const cleaned = String(input)
+          .replace(/<br\s*\/?>/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        const m = cleaned.match(
+          /(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM|am|pm)?/,
+        );
+        if (m) {
+          let hh = parseInt(m[4], 10);
+          if (m[7]) {
+            const ap = m[7].toUpperCase();
+            if (ap === "PM" && hh !== 12) hh += 12;
+            if (ap === "AM" && hh === 12) hh = 0;
+          }
+          const ampm = hh >= 12 ? "PM" : "AM";
+          let h = hh % 12;
+          h = h ? String(h).padStart(2, "0") : "12";
+          return `${String(m[1]).padStart(2, "0")}/${String(m[2]).padStart(2, "0")}/${m[3]} ${h}:${String(m[5]).padStart(2, "0")} ${ampm}`;
+        }
+        // Date-only "DD/MM/YYYY" (legacy developer lists): keep the date in
+        // DD/MM/YYYY order rather than inventing a time.
+        const d = cleaned.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        if (d) {
+          return `${String(d[1]).padStart(2, "0")}/${String(d[2]).padStart(2, "0")}/${d[3]}`;
+        }
+        return cleaned;
+      }
       const printDataString = localStorage.getItem("printTransactionData");
       const printData = JSON.parse(printDataString);
       const data = {
         invoiceNumber: `${printData.transactionData.serialNumber}`,
-        printdate:
-          new Date().toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }) +
-          " " +
-          new Date().toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          }),
+        printdate: formatBDNow(),
         clientName: printData.ownerInfo.name,
         clientEmail: printData.ownerInfo.phone,
         clientAddress: printData.ownerInfo.address,
         clientstatus: printData.ownerInfo.state,
-        date: printData.transactionData.date,
+        date: normalizeBDDateTime(printData.transactionData.date),
         reason: printData.transactionData.reason,
         paymentMethod: printData.transactionData.paymentMethod || "Cash",
         amount: Math.abs(printData.transactionData.amount),

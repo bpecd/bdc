@@ -2104,7 +2104,14 @@
             }
           }
 
-          return formatDateTo12Hour(dateObj.toISOString());
+          // Format directly to required BD format: DD/MM/YYYY HH:MM AM/PM
+          // (no toISOString round-trip: UTC conversion could shift day/time)
+          const __h24 = dateObj.getHours();
+          const __mm = String(dateObj.getMinutes()).padStart(2, "0");
+          const __ampm = __h24 >= 12 ? "PM" : "AM";
+          let __h = __h24 % 12;
+          __h = __h ? String(__h).padStart(2, "0") : "12";
+          return `${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year} ${__h}:${__mm} ${__ampm}`;
         }
       }
 
@@ -2118,12 +2125,38 @@
         // Handle various date formats
         let date;
 
-        // Check if it's already a formatted date string
+        // Normalize any slash date already carrying AM/PM to the required
+        // BD format DD/MM/YYYY HH:MM AM/PM (uppercase, zero-padded).
+        // NOTE: values reaching here are treated as already DD/MM/YYYY
+        // (raw US MM/DD/YYYY sheet values are converted in
+        // smartDateConversion before this runs), so do NOT swap — only
+        // normalize padding/case. Returning the raw string as-is was the
+        // invoice bug (it preserved MM/DD/YYYY order on prints).
         if (
           dateString.includes("/") &&
-          (dateString.includes("AM") || dateString.includes("PM"))
+          (dateString.includes("AM") ||
+            dateString.includes("PM") ||
+            dateString.includes("am") ||
+            dateString.includes("pm"))
         ) {
-          return dateString; // Already in 12-hour format
+          const __c = String(dateString)
+            .replace(/<br\s*\/?>/gi, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+          const __m = __c.match(
+            /(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)/,
+          );
+          if (__m) {
+            let __hh = parseInt(__m[4], 10);
+            const __ap = __m[6].toUpperCase();
+            if (__ap === "PM" && __hh !== 12) __hh += 12;
+            if (__ap === "AM" && __hh === 12) __hh = 0;
+            const __ampm2 = __hh >= 12 ? "PM" : "AM";
+            let __h2 = __hh % 12;
+            __h2 = __h2 ? String(__h2).padStart(2, "0") : "12";
+            return `${String(__m[1]).padStart(2, "0")}/${String(__m[2]).padStart(2, "0")}/${__m[3]} ${__h2}:${String(__m[5]).padStart(2, "0")} ${__ampm2}`;
+          }
+          return dateString; // Unrecognized shape — leave untouched
         }
 
         // Try to parse the date
@@ -2146,7 +2179,7 @@
         hour = hour % 12;
         hour = hour ? String(hour).padStart(2, "0") : "12";
 
-        return `${day}/${month}/${year} <br> ${hour}:${minute} ${ampm}`;
+        return `${day}/${month}/${year} ${hour}:${minute} ${ampm}`;
       } catch (error) {
         console.error("Error formatting date:", error);
         return dateString; // Return original on error

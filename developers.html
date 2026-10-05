@@ -691,7 +691,14 @@
             }
           }
 
-          return formatDateTo12Hour(dateObj.toISOString());
+          // Format directly to required BD format: DD/MM/YYYY HH:MM AM/PM
+          // (no toISOString round-trip: UTC conversion could shift day/time)
+          const __h24 = dateObj.getHours();
+          const __mm = String(dateObj.getMinutes()).padStart(2, "0");
+          const __ampm = __h24 >= 12 ? "PM" : "AM";
+          let __h = __h24 % 12;
+          __h = __h ? String(__h).padStart(2, "0") : "12";
+          return `${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year} ${__h}:${__mm} ${__ampm}`;
         }
       }
 
@@ -710,12 +717,38 @@
         }
         // Handle ISO string or other date strings
         else if (typeof dateInput === "string") {
-          // Check if it's already in our desired format
+          // Normalize any slash date already carrying AM/PM to the required
+          // BD format DD/MM/YYYY HH:MM AM/PM (uppercase, zero-padded).
+          // NOTE: values reaching here are treated as already DD/MM/YYYY
+          // (raw US MM/DD/YYYY sheet values are converted in
+          // smartDateConversion before this runs), so do NOT swap — only
+          // normalize padding/case. Returning the raw string as-is was the
+          // invoice bug (it preserved MM/DD/YYYY order on prints).
           if (
             dateInput.includes("/") &&
-            (dateInput.includes("AM") || dateInput.includes("PM"))
+            (dateInput.includes("AM") ||
+              dateInput.includes("PM") ||
+              dateInput.includes("am") ||
+              dateInput.includes("pm"))
           ) {
-            return dateInput; // Already in desired format
+            const __c = String(dateInput)
+              .replace(/<br\s*\/?>/gi, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+            const __m = __c.match(
+              /(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)/,
+            );
+            if (__m) {
+              let __hh = parseInt(__m[4], 10);
+              const __ap = __m[6].toUpperCase();
+              if (__ap === "PM" && __hh !== 12) __hh += 12;
+              if (__ap === "AM" && __hh === 12) __hh = 0;
+              const __ampm2 = __hh >= 12 ? "PM" : "AM";
+              let __h2 = __hh % 12;
+              __h2 = __h2 ? String(__h2).padStart(2, "0") : "12";
+              return `${String(__m[1]).padStart(2, "0")}/${String(__m[2]).padStart(2, "0")}/${__m[3]} ${__h2}:${String(__m[5]).padStart(2, "0")} ${__ampm2}`;
+            }
+            return dateInput; // Unrecognized shape — leave untouched
           }
           date = new Date(dateInput);
         } else {
@@ -754,7 +787,13 @@
         const year = matches[1];
         const month = String(parseInt(matches[2]) + 1).padStart(2, "0");
         const day = String(matches[3]).padStart(2, "0");
-        return `${day}/${month}/${year}`;
+        // Required BD format includes time: DD/MM/YYYY HH:MM AM/PM
+        let hour = parseInt(matches[4], 10);
+        const minute = String(matches[5]).padStart(2, "0");
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        hour = hour ? String(hour).padStart(2, "0") : "12";
+        return `${day}/${month}/${year} ${hour}:${minute} ${ampm}`;
       }
 
       return "Invalid Date";
